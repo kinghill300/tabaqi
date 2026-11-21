@@ -112,6 +112,7 @@ textarea{width:100%;min-height:160px;border-radius:12px;border:1.5px solid var(-
 .kpis div{background:rgba(255,255,255,.1);border-radius:14px;padding:10px}
 .kpis .big{font-size:clamp(30px,8vw,42px)}
 .spark{width:100%;height:120px;display:block}
+.cups{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.cup{width:44px;height:44px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--muted)}.cup.on{border-color:var(--leaf);color:var(--leaf)}
 .dayrow{border-bottom:1px solid var(--line);padding:12px 0}
 @media(max-width:520px){.res{grid-template-columns:minmax(0,1fr) 120px}.plate{width:120px;height:120px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -135,7 +136,7 @@ bisc:['بسكوتة','biscuit','biscuits',1],qtr:['ربع فرخة','quarter chi
 bowl:['بول','bowl','bowls',.5],piece:['قطعة','piece','pieces',1],bech:['قطعة ١٠×١٠ سم','10×10 cm piece','10×10 cm pieces',.5],
 manq:['منقوشة','manakish','manakish',.5],pkt:['كيس','packet','packets',1],scup:['كوباية صغيرة','small cup','small cups',.5]};
 // foods and meals come from data.js
-const F=window.TD.F,M=window.TD.M;
+const F=window.TD.F,M=window.TD.M;M.forEach((m,i)=>m.i=i);
 const TX={ar:{app:'طبقي',tag:'احسب السعرات اللي محتاجها، وخد اقتراحات أكل عادي بالكميات، تعمله في البيت أو تلاقيه برا.',newT:'أنا جديد',newD:'دخّل سنك وطولك ووزنك، وإحنا نحسبلك السعرات',
 knownT:'عارف سعراتي',knownD:'دخّل رقم السعرات، وابدأ في الاقتراحات على طول',how:'إزاي بيشتغل؟',hows:['بنقسم سعراتك على الوجبات حسب نوع الدايت اللي تختاره.','كل وجبة ليها اقتراح جاهز بالكميات، أو تركّبها بنفسك: تختار البروتين والكارب، والكميات بتتحسب لوحدها.','تقدر تعمل أسبوع كامل وليستة مشتريات.'],
 back:'رجوع',yourData:'بياناتك',five:'محتاجين ٥ حاجات بس.',sex:'النوع',male:'راجل',female:'ست',age:'السن',height:'الطول (سم)',weight:'الوزن (كجم)',activity:'حركتك في اليوم',
@@ -147,7 +148,7 @@ under:'وزنك أقل من الطبيعي، فحسبنالك سعرات الث�
 dietNote:'لو السعرات واحدة، الأنظمة دي كلها بتخسّس تقريبًا نفس الوزن. اختار اللي تقدر تكمّل عليه.',noEat:'مش باكل:',out:'من برا بس',
 genDay:'اقترح يوم كامل',weekBtn:'أسبوع كامل + ليستة مشتريات',ready:'اقتراح جاهز',build:'ركّب بنفسك',target:'هدفها ≈',outside:'تلاقيه برا',outS:'برا',
 another:'اقتراح تاني',choose:'اختار بنفسي',pickP:'اختار البروتين',pickC:'اختار الكارب',none:'من غير',noOpt:'مفيش اقتراحات بالفلاتر دي. شيل فلتر من فوق.',
-rulesH:'قواعد بسيطة',rules:['الخضار والسلطة براحتك، بس الزيت يتحسب.','اشرب ٢٫٥–٣ لتر مية في اليوم، والشاي والقهوة من غير سكر أو بمعلقة صغيرة.','وجبة مفتوحة مرة في الأسبوع عادي. لو أكلت زيادة، كمّل من الوجبة اللي بعدها ومتصومش.','اوزن نفسك مرة في الأسبوع، الصبح، قبل الأكل.','امشي كل يوم. ابدأ بـ ١٥ دقيقة وزوّد ٥ كل أسبوع.'],
+rulesH:'قواعد بسيطة',rules:['الخضار والسلطة براحتك، بس الزيت يتحسب.','وجبة مفتوحة مرة في الأسبوع عادي. لو أكلت زيادة، كمّل من الوجبة اللي بعدها ومتصومش.','اوزن نفسك مرة في الأسبوع، الصبح، قبل الأكل.','امشي كل يوم. ابدأ بـ ١٥ دقيقة وزوّد ٥ كل أسبوع.'],
 copyDay:'انسخ أكل النهارده',copied:'اتنسخ',today:'النهارده:',of:'من',hintP:'البروتين قليل. زوّد زبادي يوناني أو تونة، أو جرّب «ركّب بنفسك» بفراخ أو سمك.',
 hintLo:'أقل من هدفك بشوية. ممكن تزوّد فاكهة أو سناك.',hintHi:'أعلى من هدفك بشوية. جرّب اقتراح تاني لأتقل وجبة.',close:'قفل',chooseX:'اختار',
 weekT:'أسبوعك',weekD:'٧ أيام متنوعة، وتحتهم ليستة المشتريات. دوس على أي يوم عشان تشوف كمياته.',backDay:'رجوع لليوم',newWeek:'أسبوع جديد',open:'افتح',
@@ -171,7 +172,7 @@ under:'Your weight is below the healthy range, so this shows maintenance calorie
 dietNote:'At the same calories, these styles lead to similar weight loss. Pick the one you can keep up.',noEat:"I don't eat:",out:'Eating out only',
 genDay:'Suggest a full day',weekBtn:'Full week + shopping list',ready:'Ready meal',build:'Build your own',target:'Target ≈',outside:'Available outside',outS:'Out',
 another:'Another idea',choose:'Pick myself',pickP:'Pick a protein',pickC:'Pick a carb',none:'None',noOpt:'No ideas match these filters. Remove one above.',
-rulesH:'Simple rules',rules:['Vegetables and salad are unlimited; the oil counts.','Drink 2.5–3 litres of water a day; tea and coffee unsweetened or with one teaspoon of sugar.','One free meal a week is fine. If you overeat, carry on from the next meal; don’t skip meals to make up.','Weigh yourself once a week, in the morning, before eating.','Walk every day. Start with 15 minutes and add 5 each week.'],
+rulesH:'Simple rules',rules:['Vegetables and salad are unlimited; the oil counts.','One free meal a week is fine. If you overeat, carry on from the next meal; don’t skip meals to make up.','Weigh yourself once a week, in the morning, before eating.','Walk every day. Start with 15 minutes and add 5 each week.'],
 copyDay:"Copy today's meals",copied:'Copied',today:'Today:',of:'of',hintP:'Protein is low. Add Greek yogurt or tuna, or use “Build your own” with chicken or fish.',
 hintLo:'A little under your target. Add a fruit or a snack.',hintHi:'A little over your target. Try another idea for the heaviest meal.',close:'Close',chooseX:'Pick',
 weekT:'Your week',weekD:'Seven varied days, with the shopping list below. Tap a day to see its portions.',backDay:'Back to today',newWeek:'New week',open:'Open',
@@ -209,24 +210,38 @@ function qtxt(q,u){const [ua,ue,up,]=U[u];if(u==='free')return AR()?ua:ue;if(u==
  if(w===0)return(f===1?'ربع ':f===2?'نص ':'¾ ')+ua;return n(w)+' '+ua+(f===1?' وربع':f===2?' ونص':f===3?' و¾':'')}
 function line(id,qq){const f=F[id];return{id,qq,name:fn(id),q:qtxt(qq,f[2]),g:f[3]>1&&!['pc','date','egg','slice','med','tub','can','tri','roll','sq','bisc'].includes(f[2])?'≈ '+n(qq*f[3])+' '+t('g'):''}}
 function stepOf(id,q){const u=F[id][2];return(u==='tbsp'||u==='tsp')&&q>=2?1:U[u][3]}
-function build(m,target){const b=macro(m),fx=m[4].filter(x=>x[2]).reduce((a,[id,q])=>a+F[id][4]*q,0);
- const k=Math.min(2.2,Math.max(.5,(target-fx)/(b.k-fx||1)));let o={items:[],k:0,p:0,c:0};
- m[4].forEach(([id,q,f])=>{const st=stepOf(id,q*k);const qq=f?q:Math.max(st,Math.round(q*k/st)*st);add(o,id,qq)});return o}
+const kOf=its=>its.reduce((a,x)=>a+F[x.id][4]*x.qq,0);
+const pri=id=>({o:0,s:1,r:2,v:3,d:4,p:5})[F[id][8]]??3;
+// never above target: shrink (fats/starch first, protein last), then grow while it still fits
+function fitItems(its,target){let g=0;
+ while(kOf(its)>target&&g++<80){const c=its.filter(x=>!x.f&&x.qq-x.st>=x.st-1e-9);if(!c.length)break;c.sort((a,b)=>pri(a.id)-pri(b.id)||F[b.id][4]*b.st-F[a.id][4]*a.st);c[0].qq=+(c[0].qq-c[0].st).toFixed(3)}
+ g=0;while(g++<80){const rem=target-kOf(its);const c=its.filter(x=>!x.f&&x.st>0&&F[x.id][4]*x.st<=rem+1e-6&&x.qq+x.st<=x.ideal*1.6+1e-9);if(!c.length)break;c.sort((a,b)=>a.qq/(a.ideal||1)-b.qq/(b.ideal||1));c[0].qq=+(c[0].qq+c[0].st).toFixed(3)}}
+function finish(its){const o={items:[],k:0,p:0,c:0};its.forEach(x=>add(o,x.id,x.qq));return o}
+const BCACHE=new Map();
+function build(m,target){target=Math.round(target);const key=m.i+'|'+target;if(BCACHE.has(key))return BCACHE.get(key);
+ const b=macro(m),fx=m[4].filter(x=>x[2]).reduce((a,[id,q])=>a+F[id][4]*q,0);const k=Math.min(2.2,Math.max(.5,(target-fx)/(b.k-fx||1)));
+ const its=m[4].map(([id,q,f])=>{const ideal=q*k,st=f?0:stepOf(id,ideal);return{id,f:!!f,st,ideal,qq:f?q:Math.max(st,Math.floor(ideal/st+1e-9)*st)}});
+ fitItems(its,target);const o=finish(its);if(BCACHE.size>4000)BCACHE.clear();BCACHE.set(key,o);return o}
 function add(o,id,qq){const f=F[id];o.k+=f[4]*qq;o.p+=f[5]*qq;o.c+=f[6]*qq;o.items.push(line(id,qq))}
-function compose(x){const K=S.kcal*share(x),P=S.prot*share(x)*(S.diet==='high'?1.05:1);const bm=S.bm[x]||{};const plist=protList(x);
- const pid=plist.includes(bm.p)?bm.p:plist[0],cid=bm.c&&(bm.c==='none'||BC[x].includes(bm.c))?bm.c:(S.diet==='low'&&x!=='b'?'none':BC[x][0]);const o={items:[],k:0,p:0,c:0,pid,cid};
- if(!pid)return o;const pf=F[pid];let q=(P*.8)/pf[5];q=Math.min(q,K*.65/pf[4]);
- if(pid==='egg')q=Math.min(q,4);if(pid==='greek')q=Math.min(q,2);if(pid==='qareesh')q=Math.min(q,250);if(pid==='tuna')q=Math.min(q,2);
- const st=U[pf[2]][3];q=Math.max(st,Math.round(q/st)*st);add(o,pid,q);
- if(x==='b')add(o,'cuc',1);else{add(o,'salad',1);if(x==='l')add(o,'veg',1)}
- if(x!=='b'&&LEAN.includes(pid))add(o,'oil',1);if(S.diet==='low'&&x!=='b')add(o,'tahina',1);
- if(cid!=='none'){const cf=F[cid];let rem=K-o.k;if(rem>50){let cq=rem/cf[4];if(S.diet==='low')cq=Math.min(cq,(110*share(x))/cf[6]);const cs=stepOf(cid,cq);cq=Math.max(cs,Math.round(cq/cs)*cs);add(o,cid,cq)}}
- return o}
+function compose(x){const K=Math.round(S.kcal*share(x)),P=S.prot*share(x)*(S.diet==='high'?1.05:1);const bm=S.bm[x]||{};const plist=protList(x);
+ const pid=plist.includes(bm.p)?bm.p:plist[0],cid=bm.c&&(bm.c==='none'||BC[x].includes(bm.c))?bm.c:(S.diet==='low'&&x!=='b'?'none':BC[x][0]);
+ if(!pid){const o={items:[],k:0,p:0,c:0,pid,cid};return o}
+ const pf=F[pid];let pq=(P*.8)/pf[5];pq=Math.min(pq,K*.6/pf[4]);
+ const cap={egg:4,eggOm:4,greek:2,qareesh:250,tuna:2,sardine:2,turkey:8}[pid];if(cap)pq=Math.min(pq,cap);
+ const pst=U[pf[2]][3];const its=[{id:pid,f:false,st:pst,ideal:pq,qq:Math.max(pst,Math.floor(pq/pst+1e-9)*pst)}];
+ const fix=id=>its.push({id,f:true,st:0,ideal:1,qq:1});
+ if(x==='b')fix('cuc');else{fix('salad');if(x==='l')fix('veg')}
+ if(x!=='b'&&LEAN.includes(pid))fix('oil');if(S.diet==='low'&&x!=='b')fix('tahina');
+ if(cid!=='none'){const cf=F[cid];let cq=Math.max(0,K-kOf(its))/cf[4];if(S.diet==='low')cq=Math.min(cq,(110*share(x))/cf[6]);const cs=stepOf(cid,cq);
+  its.push({id:cid,f:false,st:cs,ideal:Math.max(cq,cs),qq:Math.max(cs,Math.floor(cq/cs+1e-9)*cs)})}
+ fitItems(its,K);const o=finish(its);o.pid=pid;o.cid=cid;return o}
 function protList(x){return(BP[x]||[]).filter(id=>{const g=(F[id][7]||'').split(' ');if(S.diet==='veg'&&g.some(z=>['meat','poultry','fish'].includes(z)))return false;return!g.some(z=>S.ex.includes(z))})}
 function okDiet(m){const g=tagsOf(m),b=macro(m),sn=m[0]==='s';
  if(S.diet==='veg'&&g.some(z=>['meat','poultry','fish'].includes(z)))return false;if(S.diet==='med'&&g.includes('proc'))return false;
  if(S.diet==='low'&&b.c*4/b.k>(sn?.5:.4))return false;if(S.diet==='high'&&b.p*4/b.k<(sn?.12:.22))return false;return true}
-function pool(x){const base=M.map((m,i)=>[m,i]).filter(([m])=>m[0]===x&&(!S.out||m[3])&&!tagsOf(m).some(g=>S.ex.includes(g)));const d=base.filter(([m])=>okDiet(m));return d.length?d:base}
+const PCACHE=new Map();
+function pool(x){const T0=Math.round(S.kcal*share(x)),key=[x,T0,S.diet,S.ex.join(),S.out].join('|');if(PCACHE.has(key))return PCACHE.get(key);
+ const base=M.map((m,i)=>[m,i]).filter(([m])=>m[0]===x&&(!S.out||m[3])&&!tagsOf(m).some(g=>S.ex.includes(g))&&build(m,T0).k<=T0);const d=base.filter(([m])=>okDiet(m));const r=d.length?d:base;PCACHE.set(key,r);return r}
 const sample=pl=>{const nm=pl.filter(([m])=>!m[6]);const src=nm.length&&Math.random()<.7?nm:pl;return src[Math.floor(Math.random()*src.length)]};
 function pick(x,avoid){const p=pool(x);if(!p.length)return -1;let c=p.filter(([,i])=>i!==avoid);if(!c.length)c=p;
  c.sort((a,b)=>macro(b[0]).p/macro(b[0]).k-macro(a[0]).p/macro(a[0]).k);c=c.slice(0,Math.max(3,Math.ceil(c.length*.7)));return sample(c)[1]}
@@ -274,6 +289,14 @@ function mealHTML(x,fresh){const K=S.kcal*share(x),bmode=S.mode[x]==='b'&&x!=='s
  else{const i=S.picks[x];if(i<0||i==null)return h+`<p class="note">${t('noOpt')}</p></section>`;const m=M[i];o=build(m,K);
   h+=`<p class="mname">${mn(m)}${m[3]?`<span class="tag">${t('outside')}</span>`:''}<span class="tag">${t('cu')[m[5]]||''}</span></p>${itemsHTML(o)}`}
  return h+`<div class="mfoot"><span class="k">${n(o.k)} ${t('kcal')} · ${t('prot')} ${n(o.p)} ${t('g')} · ${t('carb')} ${n(o.c)} ${t('g')}</span>${bmode?'':`<div class="acts"><button class="btn small" data-new="${x}">${t('another')}</button><button class="btn ghost small" data-list="${x}">${t('choose')}</button></div>`}</div>${logRow(x)}</section>`}
+function waterL(){const base=S.mode0==='new'?(S.sex==='f'?2:2.5):2.5;const l=Math.min(3.5,base+[0,.25,.5,.75][S.mode0==='new'?S.act:0]);return l}
+function waterHTML(){const l=waterL(),c=Math.round(l*4),got=((S.log[today()]||{}).wc)||0;
+ return`<div class="tips" id="water"><h2>${t('waterH')}</h2><p>${t('waterL')(n(l,2),n(c))}</p><p class="hint">${t('waterR')}</p><p><b>${t('waterTip')}</b></p>
+<div class="cups" role="group" aria-label="${t('waterH')}">${[...Array(c)].map((_,i)=>`<button class="cup${i<got?' on':''}" data-cup="${i+1}" aria-pressed="${i<got}" aria-label="${n(i+1)}"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 3h14l-2 18H7z" fill="${i<got?'var(--leaf)':'none'}" stroke="currentColor" stroke-width="1.6"/></svg></button>`).join('')}</div>
+<p class="hint" id="wct">${t('waterToday')(n(got),n(c))}</p>
+<p class="mname">${t('okDrinks')}</p><ul>${t('okList').map(z=>`<li>${z}</li>`).join('')}</ul>
+<p class="mname">${t('fullDrinks')}</p><ul>${t('fullList').map(z=>`<li>${z}</li>`).join('')}</ul>
+<p class="mname">${t('badDrinks')}</p><ul>${t('badList').map(z=>`<li>${z}</li>`).join('')}</ul></div>`}
 function hint(tt){return tt.p<S.prot*.8?t('hintP'):tt.k<S.kcal*.9?t('hintLo'):tt.k>S.kcal*1.1?t('hintHi'):''}
 function plan(){ensure();const c=S.mode0==='new'?calc():null,tt=totals(),rec=recDiet();
  app.innerHTML=`<section class="band"><div class="wrap">${top()}<div class="mh"><button class="btn ghost small" data-go="${S.mode0==='known'?'known':'new'}">${t('edit')}</button><button class="btn ghost small" data-go="start">${t('restart')}</button></div>
@@ -285,7 +308,7 @@ function plan(){ensure();const c=S.mode0==='new'?calc():null,tt=totals(),rec=rec
 <b>${t('noEat')}</b><div class="chips">${Object.entries(t('ex')).map(([k,l])=>`<button class="chip" data-ex="${k}" aria-pressed="${S.ex.includes(k)}">${l}</button>`).join('')}<button class="chip" data-out aria-pressed="${S.out}">${t('out')}</button></div>
 <div class="acts"><button class="btn" id="all">${t('genDay')}</button><button class="btn ghost" data-go="week">${t('weekBtn')}</button><button class="btn ghost" data-go="log">${t('logBtn')}</button></div></div>
 <div id="meals">${types().map(x=>mealHTML(x)).join('')}</div>
-<div class="tips"><h2>${t('rulesH')}</h2><ul>${t('rules').map(r=>`<li>${r}</li>`).join('')}</ul><button class="btn ghost" id="copy">${t('copyDay')}</button><div id="copyBox"></div></div></div>${foot()}
+${waterHTML()}<div class="tips"><h2>${t('rulesH')}</h2><ul>${t('rules').map(r=>`<li>${r}</li>`).join('')}</ul><button class="btn ghost" id="copy">${t('copyDay')}</button><div id="copyBox"></div></div></div>${foot()}
 <div class="total"><div class="wrap"><div class="tl"><span>${t('today')} <b id="tk">${n(tt.k)}</b> ${t('of')} ${n(S.kcal)} ${t('kcal')}</span><span>${t('prot')} <b id="tp">${n(tt.p)}</b> ${t('g')} · ${t('carb')} <b id="tc">${n(tt.c)}</b> ${t('g')}</span></div>
 <div class="bar"><span id="tb" style="width:${Math.min(100,tt.k/S.kcal*100)}%"></span></div><p class="note" id="th">${hint(tt)}</p></div></div>`}
 function refresh(x){const el=$('#m-'+x);if(el)el.outerHTML=mealHTML(x,true);const tt=totals();$('#tk').textContent=n(tt.k);$('#tp').textContent=n(tt.p);$('#tc').textContent=n(tt.c);$('#tb').style.width=Math.min(100,tt.k/S.kcal*100)+'%';$('#th').textContent=hint(tt);save()}
@@ -313,14 +336,20 @@ function dayText(){return t('today')+' '+n(S.kcal)+' '+t('kcal')+'\n'+types().ma
 function toast(s){const d=document.createElement('div');d.className='toast';d.textContent=s;document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
 function copy(txt){const fb=()=>{$('#copyBox').innerHTML='<textarea readonly></textarea>';$('#copyBox textarea').value=txt};try{navigator.clipboard.writeText(txt).then(()=>toast(t('copied')),fb)}catch(e){fb()}}
 
-const LX={ar:{logBtn:'سجلي ومتابعتي',logH:'سجّل:',ate:'أكلته',other:'أكلت حاجة تانية',skip:'مأكلتهاش',undo:'تراجع',st:{ok:'أكلته',other:'أكلت حاجة تانية',skip:'مأكلتهاش'},
+const LX={ar:{waterH:'المية والمشروبات',waterL:(l,c)=>`محتاج تشرب حوالي ${l} لتر في اليوم، يعني حوالي ${c} كوباية (٢٥٠ مل).`,waterR:'الرقم ده تقريبي، وبيزيد في الحر ومع التمرين. لو عندك مشكلة في القلب أو الكلى، اسأل دكتورك على الكمية المناسبة.',waterTip:'اشرب كوبايتين مية (نص لتر) قبل الوجبات الأساسية بنص ساعة. ده بيساعدك تحس بالشبع وتاكل أقل.',waterToday:(a,b)=>`النهارده: ${a} من ${b} كوباية. دوس على الكوباية لما تشربها.`,
+okDrinks:'تشرب براحتك (سعراتها تقريبًا صفر):',okList:['مية، ومية فوارة','مية بالليمون والنعناع أو شرايح خيار','شاي وقهوة من غير سكر (القهوة لحد ٣–٤ كوبايات في اليوم)','ينسون، ونعناع، وكركديه، وقرفة، وجنزبيل، من غير سكر','مشروبات زيرو، باعتدال'],
+fullDrinks:'مشروبات بتشبّع (ليها سعرات، فبتتحسب):',fullList:['كوباية شوربة خضار قبل الغدا (حوالي ٨٠ سعر)','لبن رايب أو لبن خالي الدسم (٨٥–١٣٠ سعر)','زبادي يوناني مخفوق بمية ونعناع (حوالي ١١٠ سعر)'],
+badDrinks:'قلل منها على قد ما تقدر:',badList:['المشروبات الغازية العادية (الكانز حوالي ١٤٠ سعر)','العصاير المعلبة، والفريش بسكر','عصير القصب (الكوباية حوالي ٢٥٠ سعر)','القهوة بالكراميل والفرابيه (٣٠٠ سعر أو أكتر)','مشروبات الطاقة'],logBtn:'سجلي ومتابعتي',logH:'سجّل:',ate:'أكلته',other:'أكلت حاجة تانية',skip:'مأكلتهاش',undo:'تراجع',st:{ok:'أكلته',other:'أكلت حاجة تانية',skip:'مأكلتهاش'},
 whatAte:'أكلت إيه؟',whatPh:'مثلًا: ٢ سندوتش كبدة وبيبسي',howMuch:'كان قد إيه؟',sizes:['أقل من المطلوب','زي المطلوب تقريبًا','أكتر شوية','أكتر بكتير'],orK:'أو اكتب السعرات لو عارفها',saveB:'سجّل',
 logT:'سجلي',logD:'كل يوم بتسجّل فيه، بتعرف التزمت قد إيه. دوس على أي يوم عشان تعدّله.',goodDays:'أيام ملتزم',streak:'ورا بعض',adh:'نسبة الالتزام',last28:'آخر ٤ أسابيع',
 stat:{good:'ملتزم',mid:'قريب من الهدف',off:'خرجت عن النظام',low:'أكلت أقل من اللازم',empty:'متسجلش'},
 wH:'وزنك',wL:'وزنك النهارده (كجم)',wSave:'سجّل الوزن',wChange:(a,b)=>`من ${a} لـ ${b} كجم`,mistH:'الأيام اللي خرجت فيها',noMist:'مفيش أيام خرجت فيها عن النظام. كمّل كده.',
 asPlan:'زي النظام',dayEdit:'يوم',backupH:'نسخة احتياطية',backupD:'البيانات محفوظة على الجهاز ده بس. انسخ النسخة الاحتياطية واحتفظ بيها، أو الصقها هنا عشان ترجّعها.',
 copyB:'انسخ النسخة الاحتياطية',restoreB:'رجّع من نسخة',restored:'رجعت البيانات',badB:'النسخة دي مش سليمة',lowNote:'أكلت أقل من ٧٠٪ من هدفك. الأكل القليل جدًا بيخليك تجوع وتاكل أكتر بعدين.',total:'المجموع'},
-en:{logBtn:'My log',logH:'Log it:',ate:'Ate it',other:'Ate something else',skip:'Skipped',undo:'Undo',st:{ok:'Ate it',other:'Ate something else',skip:'Skipped'},
+en:{waterH:'Water and drinks',waterL:(l,c)=>`Aim for about ${l} litres a day, roughly ${c} glasses (250 ml).`,waterR:'This is an estimate; you need more in hot weather and when you exercise. If you have heart or kidney problems, ask your doctor how much is right for you.',waterTip:'Drink two glasses of water (half a litre) half an hour before your main meals. It helps you feel full and eat less.',waterToday:(a,b)=>`Today: ${a} of ${b} glasses. Tap a glass when you drink it.`,
+okDrinks:'Drink freely (almost zero calories):',okList:['Water and sparkling water','Water with lemon and mint, or cucumber slices','Tea and coffee without sugar (coffee up to 3–4 cups a day)','Anise, mint, hibiscus, cinnamon or ginger, unsweetened','Zero-calorie drinks, in moderation'],
+fullDrinks:'Filling drinks (they have calories, so they count):',fullList:['A cup of vegetable soup before lunch (about 80 kcal)','Rayeb or skimmed milk (85–130 kcal)','Greek yogurt whisked with water and mint (about 110 kcal)'],
+badDrinks:'Cut down as much as you can:',badList:['Regular soft drinks (about 140 kcal a can)','Packaged juices, and fresh juice with sugar','Sugarcane juice (about 250 kcal a glass)','Caramel coffees and frappés (300 kcal or more)','Energy drinks'],logBtn:'My log',logH:'Log it:',ate:'Ate it',other:'Ate something else',skip:'Skipped',undo:'Undo',st:{ok:'Ate it',other:'Ate something else',skip:'Skipped'},
 whatAte:'What did you eat?',whatPh:'e.g. 2 liver sandwiches and a soda',howMuch:'How big was it?',sizes:['Less than planned','About as planned','A bit more','A lot more'],orK:'Or type the calories if you know them',saveB:'Save',
 logT:'My log',logD:'Every day you log shows how closely you followed the plan. Tap a day to edit it.',goodDays:'On-plan days',streak:'In a row',adh:'Adherence',last28:'Last 4 weeks',
 stat:{good:'On plan',mid:'Close to target',off:'Off plan',low:'Ate too little',empty:'Not logged'},
@@ -387,6 +416,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  if(d.log){const[k,x,st]=d.log.split('|');doLog(k,x,st);if(st!=='other'){if(!$('#sheet').hidden&&S.view==='log')dayEditor(k);else if(!$('#sheet').hidden)dayEditor(k);rerender()}return}
  if(d.unlog){const[k,x]=d.unlog.split('|');logSet(k,x,null);if(!$('#sheet').hidden)dayEditor(k);return rerender()}
  if(d.dayed)return dayEditor(d.dayed);
+ if(d.cup){const k=today(),v=+d.cup;S.log[k]=S.log[k]||{m:{}};S.log[k].wc=(S.log[k].wc===v?v-1:v);save();$('#water').outerHTML=waterHTML();return}
  if(b.id==='bk')return copy(JSON.stringify({v:2,S}));
  if(b.id==='rs'){openSheet(t('restoreB'),`<form id="rf" class="form" style="padding:8px 0"><textarea id="rt" aria-label="${t('restoreB')}"></textarea><button class="btn" type="submit">${t('restoreB')}</button></form>`);
   $('#rf').onsubmit=e=>{e.preventDefault();try{const j=JSON.parse($('#rt').value);if(!j.S||!j.S.kcal)throw 0;S={...S,...j.S};save();closeSheet();toast(t('restored'));go('log')}catch(x){toast(t('badB'))}};return}
