@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1f5c3f">
+<title>طبقي – نظام أكل</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Readex+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: صاحبك اللي فاهم في الأكل، عملي ومن غير رغي
+   IDEA: لافتة عربية الفول + الطبق المقسوم
+   PICTURE: طبق مقسوم على الوجبات وفي نصه السعرات
+   COLOUR and TYPE: أخضر ملوخية، لون العيش، أحمر طماطم؛ Lalezar للعناوين والأرقام، Readex Pro للنص
+   LAYOUT: عمود واحد للموبايل بحد أقصى ٧٢٠، وبلوك أخضر فوق */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0f1a14);--ink:light-dark(#17261d,#eef3ee);--muted:light-dark(#566a5e,#a6b7ab);
+--green:light-dark(#1f5c3f,#173f2c);--leaf:light-dark(#2f8f5b,#5fbf8a);
+--bread:light-dark(#f4e3bd,#3a301d);--bread-ink:light-dark(#5a4214,#f1dcae);
+--tomato:light-dark(#d93a26,#ff6a55);--card:light-dark(#f5f7f4,#16241c);--line:light-dark(#e1e7e2,#26382d);
+--plate:light-dark(#ffffff,#1d2c23);--plate2:light-dark(#f1f4f0,#24362b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Readex Pro",Tahoma,system-ui,sans-serif;overflow-x:clip}
+h1,h2,.big,.sign{font-family:Lalezar,"Readex Pro",Tahoma,sans-serif;font-weight:400;line-height:1.1;margin:0}
+html[lang=en] h1,html[lang=en] h2,html[lang=en] .big,html[lang=en] .sign{font-family:"Readex Pro",system-ui,sans-serif;font-weight:600;letter-spacing:-.01em}
+h1{font-size:clamp(36px,9vw,52px);text-wrap:balance}h2{font-size:24px}
+p{margin:0}
+.wrap{max-width:720px;margin:0 auto;padding:0 max(4vw,16px)}
+.band{background:var(--green);color:#fff;padding:14px 0 30px}
+.band p{opacity:.9}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:18px}
+.top .logo{font-family:Lalezar,"Readex Pro",sans-serif;font-size:24px}
+.top .acts{display:flex;gap:6px}
+.ico{min-width:44px;min-height:44px;border-radius:12px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center;font-weight:600;padding:0 10px}
+button,input,select{font:inherit;color:inherit}
+.btn{min-height:48px;border:0;border-radius:14px;padding:10px 18px;cursor:pointer;font-weight:600;background:var(--tomato);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{min-height:44px;padding:8px 14px;font-size:15px}
+.band .btn.ghost{color:#fff;border-color:rgba(255,255,255,.4)}
+:focus-visible{outline:3px solid var(--tomato);outline-offset:2px}
+.choices{display:grid;gap:14px;margin-top:24px}
+.choice{display:block;width:100%;text-align:start;border:0;border-radius:20px;padding:20px;cursor:pointer;background:var(--bread);color:var(--bread-ink)}
+.choice .sign{font-size:28px;display:block;margin-bottom:4px}
+.choice.alt{background:rgba(255,255,255,.12);color:#fff}
+.form{display:grid;gap:18px;padding:24px 0 40px}
+label.f,.f{display:grid;gap:6px;font-weight:500}
+.f input,.f select{min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);font-size:16px;width:100%}
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{min-height:44px;flex:1 1 auto;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 12px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
+.hint{font-size:14px;color:var(--muted)}
+.err{color:var(--tomato);font-weight:500;min-height:1.4em}
+.res{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:16px;align-items:center}
+.res .big{font-size:clamp(54px,15vw,80px)}
+.stats{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:8px;font-size:15px}
+.stats b{font-weight:600}
+.plate{width:180px;height:180px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;margin-top:14px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-inline-end:6px}
+.tools{padding:20px 0 6px;display:grid;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;border:1.5px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:15px}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .rec{font-size:12px;background:var(--tomato);color:#fff;border-radius:6px;padding:0 6px;margin-inline-start:6px}
+.diet{background:var(--card);border-radius:16px;padding:14px;display:grid;gap:10px}
+.meal{border-top:1.5px solid var(--line);padding:18px 0}
+.mh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mh h2 .dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:8px;vertical-align:middle}
+.tabs{display:flex;gap:4px;background:var(--card);border-radius:12px;padding:4px;margin:10px 0}
+.tabs button{flex:1;min-height:40px;border:0;border-radius:9px;background:transparent;cursor:pointer;font-size:15px}
+.tabs button[aria-pressed=true]{background:var(--bg);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.mname{font-weight:600;font-size:18px;margin:6px 0 8px}
+.lbl{font-size:14px;color:var(--muted);margin:8px 0 6px}
+.items{list-style:none;margin:8px 0 0;padding:0;background:var(--card);border-radius:14px}
+.items li{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.items li:last-child{border-bottom:0}
+.items .q{white-space:nowrap;font-weight:600;text-align:end}
+.items .q small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.k{color:var(--muted);font-size:14px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.note{font-size:14px;color:var(--muted);margin-top:6px}
+.total{position:sticky;bottom:0;background:var(--bg);border-top:1.5px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom))}
+.bar{height:10px;border-radius:99px;background:var(--card);overflow:hidden;margin-top:6px}
+.bar span{display:block;height:100%;background:var(--leaf);transition:width .4s}
+.tl{display:flex;justify-content:space-between;gap:4px 12px;font-size:15px;flex-wrap:wrap}
+.tips{padding:24px 0;display:grid;gap:8px}
+.tips ul{margin:0;padding-inline-start:20px}
+footer{font-size:13px;color:var(--muted);padding:20px 0 40px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet[hidden]{display:none}
+.panel{background:var(--bg);width:100%;max-width:720px;max-height:82vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px max(4vw,16px) 28px}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:start;border:0;border-bottom:1px solid var(--line);background:transparent;padding:14px 4px;cursor:pointer;min-height:52px}
+.opt>span:last-child{color:var(--muted);white-space:nowrap;font-size:14px}
+.tag{font-size:12px;background:var(--bread);color:var(--bread-ink);border-radius:6px;padding:1px 6px;margin-inline-start:6px;white-space:nowrap}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:15px;z-index:10}
+textarea{width:100%;min-height:160px;border-radius:12px;border:1.5px solid var(--line);padding:10px;font:inherit;background:var(--card)}
+.logrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.logrow .k{flex-basis:100%}
+.logged{background:var(--card);border-radius:12px;padding:8px 12px;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:15px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal button{aspect-ratio:1;border:0;border-radius:10px;cursor:pointer;font-size:14px;background:var(--card);color:var(--ink);min-height:40px}
+.cal .good{background:var(--leaf);color:#fff}.cal .mid{background:#f0b429;color:#3a2a00}.cal .off{background:var(--tomato);color:#fff}.cal .low{background:#8fb3a0;color:#fff}
+.cal .today{outline:2px solid var(--ink);outline-offset:1px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.kpis div{background:rgba(255,255,255,.1);border-radius:14px;padding:10px}
+.kpis .big{font-size:clamp(30px,8vw,42px)}
+.spark{width:100%;height:120px;display:block}
+.dayrow{border-bottom:1px solid var(--line);padding:12px 0}
+@media(max-width:520px){.res{grid-template-columns:minmax(0,1fr) 120px}.plate{width:120px;height:120px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+.fresh .items{animation:pop .3s ease}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="sheet" id="sheet" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetT"><div class="mh"><h2 id="sheetT"></h2><button class="btn ghost small" id="closeSheet"></button></div><div id="sheetList"></div></div></div>
+<script>
+{
+// units: [ar, en, en plural, rounding step]
+const U={g:['جم','g','g',10],loaf:['رغيف','loaf','loaves',.5],slice:['شريحة','slice','slices',1],sand:['سندوتش','sandwich','sandwiches',.5],
+cup:['كوب','cup','cups',.25],tsp:['معلقة صغيرة','tsp','tsp',.25],tbsp:['معلقة كبيرة','tbsp','tbsp',.25],pc:['حبة','piece','pieces',1],
+med:['حبة متوسطة','medium','medium',1],egg:['بيضة','egg','eggs',1],date:['تمرة','date','dates',1],serv:['حصة','serving','servings',.5],
+can:['علبة صغيرة','small can','small cans',.5],tub:['علبة','tub','tubs',.5],tri:['مثلث','wedge','wedges',1],plate:['طبق','plate','plates',1],
+free:['براحتك','as you like','as you like',1],roll:['صباع','roll','rolls',1],sq:['مربع صغير','small square','small squares',1],
+bisc:['بسكوتة','biscuit','biscuits',1],qtr:['ربع فرخة','quarter chicken','quarter chickens',.5],box:['علبة صغيرة','small box','small boxes',.5],
+bowl:['بول','bowl','bowls',.5],piece:['قطعة','piece','pieces',1],bech:['قطعة ١٠×١٠ سم','10×10 cm piece','10×10 cm pieces',.5],
+manq:['منقوشة','manakish','manakish',.5],scup:['كوباية صغيرة','small cup','small cups',.5]};
+// foods: [ar, en, unit, grams/unit, kcal, protein, carbs, tags]
+const F={
+baladi:['عيش بلدي','Baladi bread','loaf',100,250,9,50],shami:['عيش شامي','Pita bread','loaf',80,220,7,45],toast:['توست أسمر','Brown toast','slice',30,75,3,13],
+foulSand:['سندوتش فول بعيش بلدي صغير (زيت خفيف)','Foul sandwich, small baladi bread (light oil)','sand',0,230,9,30,'legume'],
+taamSand:['سندوتش طعمية (قرصين)','Taameya sandwich (2 patties)','sand',0,260,7,32],
+foul:['فول مدمس','Foul medames','cup',200,220,15,40,'legume'],oil:['زيت (أي نوع)','Cooking oil (any)','tsp',5,45,0,0],tahina:['طحينة','Tahini','tbsp',15,90,3,3],
+qareesh:['جبنة قريش','Cottage cheese (areesh)','g',1,.95,.12,.03,'dairy'],roumy:['جبنة رومي','Roumy cheese','slice',15,57,3.5,.3,'dairy'],
+white:['جبنة بيضا قليلة الملح','Low-salt white cheese','g',1,2.6,.14,.02,'dairy'],triangle:['مثلث جبنة لايت','Light cheese wedge','tri',17,35,2,1,'dairy'],
+greek:['زبادي يوناني لايت','Light Greek yogurt','tub',170,110,17,6,'dairy'],yog:['زبادي لايت','Light yogurt','tub',105,50,4,5,'dairy'],
+milk:['لبن نص دسم','Semi-skimmed milk','cup',240,120,8,12,'dairy'],rayeb:['لبن رايب','Buttermilk (rayeb)','cup',240,130,8,12,'dairy'],
+oats:['شوفان','Oats','tbsp',8,30,1,5],honey:['عسل','Honey','tsp',7,21,0,6],almond:['لوز','Almonds','pc',1.2,7,.25,.25],
+banana:['موزة صغيرة','Small banana','pc',100,90,1,23],fruit:['فاكهة (تفاحة، برتقالة، كوب بطيخ…)','Fruit (apple, orange, cup of melon…)','serv',0,70,.5,17],
+dates:['تمر','Dates','date',10,25,.2,7],tuna:['تونة مصفّاة','Tuna, drained','can',100,160,25,0,'fish'],mayo:['مايونيز لايت','Light mayonnaise','tbsp',15,45,0,1],
+egg:['بيض مسلوق','Boiled eggs','egg',50,75,6,.5,'egg'],eggOm:['بيض (أومليت أو شكشوكة)','Eggs (omelette or shakshuka)','egg',50,75,6,.5,'egg'],
+luncheon:['لانشون فراخ','Chicken luncheon','slice',20,45,3,2,'poultry proc'],
+chicken:['صدور فراخ مشوية أو في الفرن','Chicken breast, grilled or baked','g',1,1.65,.31,0,'poultry'],thigh:['ورك فراخ من غير جلد','Skinless chicken thigh','g',1,1.8,.26,0,'poultry'],
+fish:['سمك مشوي (بلطي أو بوري)','Grilled fish (tilapia or mullet)','g',1,1.3,.26,0,'fish'],shrimp:['جمبري أو كاليماري مشوي','Grilled shrimp or calamari','g',1,1,.22,0,'fish'],
+beef:['لحمة بتلو مطبوخة','Lean veal, cooked','g',1,2,.28,0,'meat'],mince:['لحمة مفرومة قليلة الدهن','Lean minced beef','g',1,2.2,.26,0,'meat'],
+kofta:['كفتة مشوية','Grilled kofta','g',1,2.4,.2,.03,'meat'],tawook:['شيش طاووق مشوي','Shish tawook','g',1,1.7,.28,.02,'poultry'],
+liverD:['كبدة مطبوخة','Cooked liver','g',1,1.9,.26,.04,'meat'],pane:['بانيه فراخ في الفرن','Oven-baked breaded chicken','g',1,2.1,.27,.08,'poultry'],
+rice:['رز مطبوخ','Cooked rice','cup',200,260,5,56],pasta:['مكرونة مطبوخة','Cooked pasta','cup',140,220,8,43],
+potato:['بطاطس مسلوقة أو في الفرن','Boiled or baked potato','med',150,130,3,30],sweetp:['بطاطا مشوية','Roasted sweet potato','med',150,130,2,30],
+lentil:['عدس مطبوخ','Cooked lentils','cup',200,230,18,40,'legume'],lsoup:['شوربة عدس','Lentil soup','cup',240,150,9,22,'legume'],
+hummusD:['حمص بطحينة','Hummus','tbsp',30,70,2,6,'legume'],chick:['حمص الشام المشوي','Roasted chickpeas','cup',160,600,28,80,'legume'],
+molokhia:['ملوخية','Molokhia','cup',240,80,3,8],stew:['خضار مطبوخ (بامية، فاصوليا، بسلة)','Vegetable stew (okra, green beans, peas)','cup',240,110,4,15],
+veg:['خضار سوتيه','Sautéed vegetables','cup',150,70,2,10],salad:['سلطة خضرا','Green salad','plate',0,40,1,7],
+cuc:['خيار وطماطم وجرجير','Cucumber, tomato and rocket','free',0,20,1,4],mahshi:['محشي كرنب أو ورق عنب','Stuffed cabbage or vine leaves','roll',30,45,1,7],
+bech:['مكرونة بشاميل','Macarona béchamel','bech',250,450,20,40,'meat dairy'],koshari:['كشري بتقلية خفيفة','Koshari, light fried onions','box',0,600,18,105,'legume'],
+shawarma:['سندوتش شاورما فراخ عادي','Regular chicken shawarma sandwich','sand',0,450,25,45,'poultry proc'],
+quarter:['ربع فرخة مشوية من غير جلد','Grilled quarter chicken, skin off','qtr',0,300,40,0,'poultry'],
+burger:['برجر لحمة سنجل (مش كريسبي)','Single beef burger (not crispy)','sand',0,450,24,40,'meat proc'],
+gsand:['سندوتش فراخ مشوية','Grilled chicken sandwich','sand',0,400,30,40,'poultry'],
+pizza:['بيتزا وسط فراخ أو خضار','Medium chicken or veggie pizza','slice',0,220,10,26,'dairy proc'],
+sushi:['سوشي مش مقلي','Sushi (not fried)','piece',0,40,1.5,7,'fish'],
+manz:['منقوشة زعتر صغيرة','Small zaatar manakish','manq',0,300,7,40],manc:['منقوشة جبنة صغيرة','Small cheese manakish','manq',0,350,14,38,'dairy'],
+liver:['سندوتش كبدة اسكندراني','Alexandrian liver sandwich','sand',0,350,18,35,'meat proc'],hawawshi:['حواوشي صغير','Small hawawshi','sand',0,500,22,40,'meat proc'],
+bowl:['بول رز بالفراخ','Chicken rice bowl','bowl',0,550,35,65,'poultry'],caesar:['سلطة سيزر بالفراخ','Chicken Caesar salad','bowl',0,420,32,18,'poultry dairy'],
+popcorn:['فشار بمعلقة زيت','Popcorn (1 tsp oil)','cup',8,35,1,6],dark:['شوكولاتة دارك','Dark chocolate','sq',8,45,.6,3.5],
+ice:['آيس كريم','Ice cream','scup',100,130,2,15,'dairy'],dig:['بسكوت دايجستيف','Digestive biscuit','bisc',15,70,1,10],
+peanut:['فول سوداني','Peanuts','pc',1,6,.25,.15],pb:['زبدة فول سوداني','Peanut butter','tbsp',16,95,4,3]};
+// meals: [type, ar, en, outside, [[food, qty, fixed]]]
+const M=[
+['b','سندوتشين فول','Two foul sandwiches',1,[['foulSand',2],['cuc',1,1]]],['b','فول وجبنة رومي','Foul and roumy cheese',1,[['foulSand',1],['baladi',.5],['roumy',2],['cuc',1,1]]],
+['b','منقوشة زعتر ولبن رايب','Zaatar manakish and rayeb',1,[['manz',1],['rayeb',1]]],['b','فول وطعمية','Foul and taameya',1,[['foulSand',1],['taamSand',1],['cuc',1,1]]],
+['b','شوفان باللبن والموز','Oats with milk and banana',0,[['oats',8],['milk',1],['banana',1],['honey',1]]],['b','عيش وجبنة قريش','Bread and cottage cheese',0,[['baladi',1],['qareesh',150],['cuc',1,1]]],
+['b','زبادي يوناني بالشوفان','Greek yogurt with oats',0,[['greek',1],['oats',4],['fruit',1],['almond',7]]],['b','تونة بالتوست','Tuna on toast',0,[['toast',4],['tuna',1],['mayo',1],['cuc',1,1]]],
+['b','فول في البيت','Homemade foul',0,[['foul',1],['oil',1],['baladi',.5],['salad',1,1]]],['b','سندوتش لانشون وزبادي','Luncheon sandwich and yogurt',1,[['shami',1],['luncheon',3],['yog',1]]],
+['b','بيض مسلوق وعيش','Boiled eggs and bread',0,[['egg',2],['baladi',1],['cuc',1,1]]],['b','أومليت بالخضار وتوست','Veggie omelette and toast',0,[['eggOm',2],['oil',1],['toast',2],['cuc',1,1]]],
+['b','شكشوكة بالعيش','Shakshuka with bread',0,[['eggOm',3],['oil',1],['baladi',.5],['cuc',1,1]]],['b','سندوتش كبدة وسلطة','Liver sandwich and salad',1,[['liver',1],['salad',1,1]]],
+['b','توست بزبدة الفول السوداني','Peanut butter toast',0,[['toast',3],['pb',1],['banana',1]]],['b','عيش وجبنة بيضا','Bread and white cheese',1,[['baladi',1],['white',50],['cuc',1,1]]],
+['b','فول بالطحينة','Foul with tahini',0,[['foul',1],['tahina',1],['baladi',.5],['cuc',1,1]]],['b','حمص بطحينة وعيش','Hummus and bread',1,[['hummusD',4],['baladi',1],['cuc',1,1]]],
+['b','بانكيك شوفان','Oat pancakes',0,[['oats',6],['eggOm',2],['banana',1],['honey',1]]],
+['l','فراخ بالرز والخضار','Chicken, rice and vegetables',0,[['chicken',200],['rice',1],['veg',1],['salad',1,1]]],['l','ملوخية بالفراخ','Molokhia with chicken',0,[['molokhia',1.5],['chicken',200],['rice',1]]],
+['l','سمك مشوي بالرز','Grilled fish with rice',0,[['fish',200],['rice',1],['tahina',1],['salad',1,1]]],['l','مكرونة باللحمة المفرومة','Pasta with minced beef',0,[['pasta',1.5],['mince',100],['salad',1,1]]],
+['l','خضار مطبوخ باللحمة','Vegetable stew with meat',0,[['stew',1.5],['beef',150],['rice',1]]],['l','محشي مع فراخ','Mahshi with chicken',0,[['mahshi',8],['thigh',150],['salad',1,1]]],
+['l','كفتة مشوية بالعيش','Grilled kofta with bread',1,[['kofta',150],['baladi',1],['tahina',1],['salad',1,1]]],['l','مكرونة بشاميل وسلطة','Béchamel pasta and salad',0,[['bech',1],['salad',1,1]]],
+['l','عدس ورغيف','Lentils and bread',0,[['lentil',2],['baladi',1],['yog',1],['salad',1,1]]],['l','جمبري بالرز','Shrimp with rice',1,[['shrimp',200],['rice',1.5],['salad',1,1]]],
+['l','ربع فرخة مشوية','Grilled quarter chicken',1,[['quarter',1],['rice',.5],['baladi',.5],['salad',1,1]]],['l','شاورما فراخ وزبادي','Chicken shawarma and yogurt',1,[['shawarma',1],['yog',1],['salad',1,1]]],
+['l','برجر سنجل من غير بطاطس','Single burger, no fries',1,[['burger',1],['salad',1,1]]],['l','شيش طاووق بالعيش','Shish tawook with bread',1,[['tawook',200],['baladi',1],['salad',1,1]]],
+['l','بيتزا وسلطة','Pizza and salad',1,[['pizza',2],['salad',1,1]]],['l','كشري صغير','Small koshari',1,[['koshari',1]]],['l','سوشي','Sushi',1,[['sushi',12]]],
+['l','بول رز بالفراخ','Chicken rice bowl',1,[['bowl',1],['salad',1,1]]],['l','فراخ بالبطاطس في الفرن','Oven chicken and potatoes',0,[['chicken',200],['potato',2],['veg',1]]],
+['l','سندوتش فراخ مشوية وسلطة','Grilled chicken sandwich and salad',1,[['gsand',1],['salad',1,1]]],['l','بانيه في الفرن بالمكرونة','Oven pané with pasta',0,[['pane',150],['pasta',1],['salad',1,1]]],
+['l','كبدة بالرز','Liver with rice',0,[['liverD',150],['rice',1],['salad',1,1]]],['l','سلطة سيزر بالفراخ','Chicken Caesar salad',1,[['caesar',1],['baladi',.5]]],
+['l','بامية باللحمة','Okra with meat',0,[['stew',1.5],['beef',150],['baladi',.5]]],['l','حواوشي وسلطة','Hawawshi and salad',1,[['hawawshi',1],['salad',1,1]]],
+['l','عدس بجبة وبيض','Lentils with eggs',0,[['lentil',1.5],['egg',2],['baladi',.5],['salad',1,1]]],
+['d','تونة وسلطة','Tuna and salad',0,[['tuna',1],['baladi',.5],['salad',1,1]]],['d','جبنة قريش وفاكهة','Cottage cheese and fruit',0,[['qareesh',150],['baladi',.5],['fruit',1],['cuc',1,1]]],
+['d','زبادي يوناني وفاكهة','Greek yogurt and fruit',0,[['greek',1],['fruit',2],['almond',7]]],['d','سندوتش فراخ مشوية','Grilled chicken sandwich',1,[['gsand',1]]],
+['d','شوربة عدس','Lentil soup',0,[['lsoup',1.5],['baladi',.5]]],['d','فول وزبادي','Foul and yogurt',0,[['foul',.5],['baladi',.5],['yog',1],['salad',1,1]]],
+['d','فراخ وخضار','Chicken and vegetables',0,[['chicken',150],['veg',1],['salad',1,1]]],['d','سلطة تونة بالمكرونة','Tuna pasta salad',0,[['pasta',.5],['tuna',1],['yog',1],['salad',1,1]]],
+['d','لانشون وجبنة','Luncheon and cheese',1,[['luncheon',4],['roumy',1],['baladi',.5],['cuc',1,1]]],['d','بيض وجبنة بيضا','Eggs and white cheese',0,[['egg',2],['white',30],['toast',2],['cuc',1,1]]],
+['d','بطاطا وزبادي يوناني','Sweet potato and Greek yogurt',0,[['sweetp',1],['greek',1]]],['d','سندوتش فول وزبادي','Foul sandwich and yogurt',1,[['foulSand',1],['yog',1]]],
+['d','سمك وبطاطس','Fish and potato',0,[['fish',150],['potato',1],['salad',1,1]]],['d','شكشوكة','Shakshuka',0,[['eggOm',3],['oil',1],['toast',1],['cuc',1,1]]],
+['d','حمص بطحينة وخضار','Hummus and vegetables',1,[['hummusD',4],['shami',.5],['cuc',1,1],['yog',1]]],['d','سلطة فراخ','Chicken salad',0,[['chicken',120],['salad',1,1],['toast',1],['yog',1]]],
+['s','فاكهة وزبادي','Fruit and yogurt',0,[['fruit',1],['yog',1]]],['s','فاكهة ولوز','Fruit and almonds',0,[['fruit',1],['almond',10]]],['s','فشار','Popcorn',0,[['popcorn',3]]],
+['s','حمص الشام','Roasted chickpeas',1,[['chick',.25]]],['s','تمر ولبن','Dates and milk',0,[['dates',2],['milk',1]]],['s','شوكولاتة دارك','Dark chocolate',1,[['dark',3]]],
+['s','آيس كريم صغير','Small ice cream',1,[['ice',1]]],['s','شاي بلبن وبسكوت','Milky tea and biscuits',0,[['milk',.5],['dig',2]]],['s','سلطة فواكه بالزبادي','Fruit salad with yogurt',0,[['fruit',2],['yog',1]]],
+['s','جبنة وخيار','Cheese and cucumber',0,[['triangle',2],['cuc',1,1]]],['s','فول سوداني','Peanuts',1,[['peanut',15]]],['s','زبادي يوناني','Greek yogurt',1,[['greek',1]]],
+['s','فاكهة وجبنة قريش','Fruit and cottage cheese',0,[['fruit',1],['qareesh',100]]],['s','لبن بالموز','Banana milk',0,[['milk',1],['banana',1]]],['s','خيار وحمص بطحينة','Cucumber and hummus',0,[['cuc',1,1],['hummusD',3]]]];
+const TX={ar:{app:'طبقي',tag:'احسب السعرات اللي محتاجها، وخد اقتراحات أكل عادي بالكميات، تعمله في البيت أو تلاقيه برا.',newT:'أنا جديد',newD:'دخّل سنك وطولك ووزنك، وإحنا نحسبلك السعرات',
+knownT:'عارف سعراتي',knownD:'دخّل رقم السعرات، وابدأ في الاقتراحات على طول',how:'إزاي بيشتغل؟',hows:['بنقسم سعراتك على الوجبات حسب نوع الدايت اللي تختاره.','كل وجبة ليها اقتراح جاهز بالكميات، أو تركّبها بنفسك: تختار البروتين والكارب، والكميات بتتحسب لوحدها.','تقدر تعمل أسبوع كامل وليستة مشتريات.'],
+back:'رجوع',yourData:'بياناتك',five:'محتاجين ٥ حاجات بس.',sex:'النوع',male:'راجل',female:'ست',age:'السن',height:'الطول (سم)',weight:'الوزن (كجم)',activity:'حركتك في اليوم',
+acts:['قليلة جدًا (شغل مكتب)','خفيفة (تمرين ١–٣ أيام)','متوسطة (٣–٥ أيام)','عالية (يوميًا)'],goal:'هدفك',lose:'أخس',keep:'أثبت وزني',gain:'أزوّد',calc:'احسب سعراتي',
+eAge18:'الموقع ده للكبار من ١٨ سنة. لو أصغر، الأحسن تتابع مع دكتور.',eAge:'اكتب سنك بالأرقام (من ١٨ لـ ٨٠).',eH:'اكتب طولك بالسنتيمتر، زي ١٧٠.',eW:'اكتب وزنك بالكيلو، زي ٨٥.',
+eK:'اكتب رقم بين ١٢٠٠ و٤٥٠٠. أقل من ١٢٠٠ سعر في اليوم محتاج متابعة دكتور.',kQ:'سعراتك كام؟',kL:'السعرات في اليوم',kwL:'وزنك بالكيلو (اختياري، عشان نحسب البروتين)',go:'ابدأ الاقتراحات',
+edit:'عدّل بياناتي',restart:'من الأول',need:'محتاج في اليوم',kcal:'سعر',prot:'بروتين',carb:'كارب',g:'جم',bmi:'مؤشر كتلة الجسم',loss:'نزول متوقع',wk:'كجم/أسبوع',
+under:'وزنك أقل من الطبيعي، فحسبنالك سعرات الثبات مش التخسيس. يُفضّل تكلم دكتور.',dietH:'نوع الدايت',rec:'مقترح ليك',
+dietNote:'لو السعرات واحدة، الأنظمة دي كلها بتخسّس تقريبًا نفس الوزن. اختار اللي تقدر تكمّل عليه.',noEat:'مش باكل:',out:'من برا بس',
+genDay:'اقترح يوم كامل',weekBtn:'أسبوع كامل + ليستة مشتريات',ready:'اقتراح جاهز',build:'ركّب بنفسك',target:'هدفها ≈',outside:'تلاقيه برا',outS:'برا',
+another:'اقتراح تاني',choose:'اختار بنفسي',pickP:'اختار البروتين',pickC:'اختار الكارب',none:'من غير',noOpt:'مفيش اقتراحات بالفلاتر دي. شيل فلتر من فوق.',
+rulesH:'قواعد بسيطة',rules:['الخضار والسلطة براحتك، بس الزيت يتحسب.','اشرب ٢٫٥–٣ لتر مية في اليوم، والشاي والقهوة من غير سكر أو بمعلقة صغيرة.','وجبة مفتوحة مرة في الأسبوع عادي. لو أكلت زيادة، كمّل من الوجبة اللي بعدها ومتصومش.','اوزن نفسك مرة في الأسبوع، الصبح، قبل الأكل.','امشي كل يوم. ابدأ بـ ١٥ دقيقة وزوّد ٥ كل أسبوع.'],
+copyDay:'انسخ أكل النهارده',copied:'اتنسخ',today:'النهارده:',of:'من',hintP:'البروتين قليل. زوّد زبادي يوناني أو تونة، أو جرّب «ركّب بنفسك» بفراخ أو سمك.',
+hintLo:'أقل من هدفك بشوية. ممكن تزوّد فاكهة أو سناك.',hintHi:'أعلى من هدفك بشوية. جرّب اقتراح تاني لأتقل وجبة.',close:'قفل',chooseX:'اختار',
+weekT:'أسبوعك',weekD:'٧ أيام متنوعة، وتحتهم ليستة المشتريات. دوس على أي يوم عشان تشوف كمياته.',backDay:'رجوع لليوم',newWeek:'أسبوع جديد',open:'افتح',
+shopH:'ليستة المشتريات',shopD:'الكميات للأسبوع كله. اللحوم والرز والمكرونة والعدس محسوبين ني. دوس على الحاجة لما تشتريها.',readyN:n=>`وفيه ${n} حاجة هتشتريها جاهزة من برا.`,
+copyShop:'انسخ الليستة',raw:'ني',forM:n=>`لـ ${n} وجبة`,kg:'كيلو',cats:['بروتين','ألبان وجبن','عيش ونشويات','خضار وفاكهة','بقالة وتاني'],
+days:['السبت','الحد','الاتنين','التلات','الأربع','الخميس','الجمعة'],meals:{b:'الفطار',l:'الغدا',d:'العشا',s:'السناكس'},m16:{l:'الوجبة الأولى',d:'الوجبة التانية'},
+ex:{egg:'بيض',fish:'سمك وتونة',dairy:'ألبان',meat:'لحمة',poultry:'فراخ'},theme:'غيّر الوضع الفاتح والداكن',lang:'EN',
+foot:'الحسابات دي تقديرية، ومش بديل عن دكتور أو أخصائي تغذية. لو عندك سكر أو ضغط أو أي مرض مزمن، أو حامل أو بترضعي، استشير دكتورك الأول.',
+D:{bal:['متوازن','كل المجموعات بنسب معتدلة. أسهل نظام تكمّل عليه.'],high:['بروتين عالي','بروتين أكتر بيشبّعك وبيحافظ على عضلك وانت بتخس.'],
+low:['قليل الكارب','عيش ورز أقل (حوالي ١٠٠–١٣٠ جم كارب في اليوم)، وبروتين وخضار أكتر. ده مش كيتو.'],med:['متوسطي','سمك وبقوليات وخضار أكتر، ومن غير لحوم مصنّعة.'],
+veg:['نباتي','من غير لحمة وفراخ وسمك. البروتين من البيض والألبان والبقوليات.'],if16:['صيام متقطع ١٦:٨','وجبتين وسناك في ٨ ساعات، وباقي اليوم مية وشاي وقهوة من غير سكر. مش مناسب لو بتاخد علاج سكر أو حامل.']},
+why:{high:'اقترحناه عشان بيساعدك تشبع وانت بتخس.',bal:'اقترحناه عشان أسهل حاجة تكمّل عليها.',med:'اقترحناه عشان مناسب للثبات على المدى الطويل.'}},
+en:{app:'Tabaqi',tag:'Work out your daily calories and get everyday meal ideas with exact portions. Cook at home or grab it outside.',newT:"I'm new",newD:"Enter your age, height and weight and we'll work out your calories",
+knownT:'I know my calories',knownD:'Type your number and go straight to meal ideas',how:'How it works',hows:['Your calories are split across meals based on the diet style you pick.','Each meal comes with a ready idea with portions, or build your own: pick a protein and a carb and the amounts are worked out for you.','Make a full week and a shopping list in one tap.'],
+back:'Back',yourData:'Your details',five:'Just five things.',sex:'Sex',male:'Male',female:'Female',age:'Age',height:'Height (cm)',weight:'Weight (kg)',activity:'Daily activity',
+acts:['Very low (desk job)','Light (exercise 1–3 days)','Moderate (3–5 days)','High (daily)'],goal:'Goal',lose:'Lose weight',keep:'Maintain',gain:'Gain',calc:'Calculate my calories',
+eAge18:'This tool is for adults 18 and over. If you are younger, check with a doctor.',eAge:'Enter your age in numbers (18 to 80).',eH:'Enter your height in cm, e.g. 170.',eW:'Enter your weight in kg, e.g. 85.',
+eK:'Enter a number between 1200 and 4500. Under 1200 kcal a day needs a doctor’s supervision.',kQ:'Your daily calories',kL:'Calories per day',kwL:'Your weight in kg (optional, for protein)',go:'Show meal ideas',
+edit:'Edit my details',restart:'Start over',need:'Your daily target',kcal:'kcal',prot:'Protein',carb:'Carbs',g:'g',bmi:'BMI',loss:'Expected loss',wk:'kg/week',
+under:'Your weight is below the healthy range, so this shows maintenance calories, not weight loss. Consider talking to a doctor.',dietH:'Diet style',rec:'Suggested',
+dietNote:'At the same calories, these styles lead to similar weight loss. Pick the one you can keep up.',noEat:"I don't eat:",out:'Eating out only',
+genDay:'Suggest a full day',weekBtn:'Full week + shopping list',ready:'Ready meal',build:'Build your own',target:'Target ≈',outside:'Available outside',outS:'Out',
+another:'Another idea',choose:'Pick myself',pickP:'Pick a protein',pickC:'Pick a carb',none:'None',noOpt:'No ideas match these filters. Remove one above.',
+rulesH:'Simple rules',rules:['Vegetables and salad are unlimited; the oil counts.','Drink 2.5–3 litres of water a day; tea and coffee unsweetened or with one teaspoon of sugar.','One free meal a week is fine. If you overeat, carry on from the next meal; don’t skip meals to make up.','Weigh yourself once a week, in the morning, before eating.','Walk every day. Start with 15 minutes and add 5 each week.'],
+copyDay:"Copy today's meals",copied:'Copied',today:'Today:',of:'of',hintP:'Protein is low. Add Greek yogurt or tuna, or use “Build your own” with chicken or fish.',
+hintLo:'A little under your target. Add a fruit or a snack.',hintHi:'A little over your target. Try another idea for the heaviest meal.',close:'Close',chooseX:'Pick',
+weekT:'Your week',weekD:'Seven varied days, with the shopping list below. Tap a day to see its portions.',backDay:'Back to today',newWeek:'New week',open:'Open',
+shopH:'Shopping list',shopD:'Amounts are for the whole week. Meat, rice, pasta and lentils are given raw. Tap an item once you have it.',readyN:n=>`Plus ${n} items you’ll buy ready-made outside.`,
+copyShop:'Copy list',raw:'raw',forM:n=>`for ${n} meals`,kg:'kg',cats:['Protein','Dairy and cheese','Bread and starches','Vegetables and fruit','Pantry and other'],
+days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],meals:{b:'Breakfast',l:'Lunch',d:'Dinner',s:'Snacks'},m16:{l:'First meal',d:'Second meal'},
+ex:{egg:'Eggs',fish:'Fish and tuna',dairy:'Dairy',meat:'Red meat',poultry:'Chicken'},theme:'Switch light and dark mode',lang:'عربي',
+foot:'These numbers are estimates and no substitute for a doctor or dietitian. If you have diabetes, high blood pressure or another chronic condition, or are pregnant or breastfeeding, check with your doctor first.',
+D:{bal:['Balanced','All food groups in moderate amounts. The easiest to stick with.'],high:['High protein','More protein keeps you full and protects muscle while you lose weight.'],
+low:['Lower carb','Less bread and rice (about 100–130 g carbs a day), more protein and vegetables. This is not keto.'],med:['Mediterranean','More fish, legumes and vegetables; no processed meat.'],
+veg:['Vegetarian','No meat, poultry or fish. Protein comes from eggs, dairy and legumes.'],if16:['Intermittent fasting 16:8','Two meals and a snack within 8 hours; water, tea and black coffee the rest of the day. Not suitable if you take diabetes medication or are pregnant.']},
+why:{high:'Suggested because it helps you stay full while losing weight.',bal:'Suggested because it is the easiest to keep up.',med:'Suggested because it suits long-term maintenance.'}}};
+const DIET={bal:[1.6,.45],high:[1.8,.40],low:[1.7,0],med:[1.6,.45],veg:[1.4,.5],if16:[1.6,.45]};
+const COL={b:'#f0b429',l:'#e2412e',d:'#2f8f5b',s:'#8a5a2b'};
+const BP={b:['egg','qareesh','greek','tuna','foul','white'],l:['chicken','thigh','fish','shrimp','beef','kofta','tawook','tuna','egg','lentil'],d:['chicken','fish','tuna','egg','qareesh','greek','tawook','lentil','shrimp']};
+const BC={b:['baladi','shami','toast','oats','potato','none'],l:['rice','baladi','pasta','potato','sweetp','none'],d:['baladi','toast','rice','pasta','potato','sweetp','none']};
+const LEAN=['chicken','fish','shrimp','tuna','tawook','qareesh','greek','lentil'];
+const READY=['foulSand','taamSand','shawarma','quarter','burger','gsand','pizza','sushi','manz','manc','liver','bowl','koshari','hawawshi','caesar'];
+const CAT=['chicken thigh fish shrimp beef mince kofta tawook liverD pane tuna luncheon egg eggOm','qareesh roumy white triangle greek yog milk rayeb ice','baladi shami toast oats rice pasta potato sweetp lentil lsoup foul chick',
+ 'molokhia stew veg salad cuc fruit banana dates mahshi','oil tahina honey almond mayo popcorn dark dig peanut pb hummusD bech'];
+const RAW={chicken:1.33,thigh:1.33,beef:1.4,mince:1.33,kofta:1.33,tawook:1.33,liverD:1.3,pane:1.2,fish:1.25,shrimp:1.2};const RAWC={rice:75,pasta:65,lentil:80,lsoup:40};
+const $=s=>document.querySelector(s),app=$('#app');
+let S={view:'start',lang:'ar',sex:'m',age:'',h:'',w:'',act:0,goal:'lose',kcal:0,prot:0,diet:'bal',ex:[],out:false,picks:{},mode:{},bm:{},week:null,got:[],log:{}};
+try{const s=JSON.parse(localStorage.getItem('tabaqi2'));if(s){S={...S,...s};S.view=S.kcal?'plan':'start'}}catch(e){}
+const save=()=>{try{localStorage.setItem('tabaqi2',JSON.stringify(S))}catch(e){}};
+const t=k=>TX[S.lang][k],AR=()=>S.lang==='ar';
+const n=(x,d=0)=>(+x).toLocaleString(AR()?'ar-EG':'en-US',{maximumFractionDigits:d,minimumFractionDigits:0});
+const fn=id=>F[id][AR()?0:1],mn=m=>m[AR()?1:2];
+const types=()=>S.diet==='if16'?['l','d','s']:['b','l','d','s'];
+const share=x=>S.diet==='if16'?{l:.45,d:.4,s:.15}[x]:{b:.25,l:.35,d:.25,s:.15}[x];
+const mlabel=x=>S.diet==='if16'&&t('m16')[x]||t('meals')[x];
+const tagsOf=m=>m[4].flatMap(([id])=>(F[id][7]||'').split(' ')).filter(Boolean);
+const macro=m=>m[4].reduce((a,[id,q])=>(a.k+=F[id][4]*q,a.p+=F[id][5]*q,a.c+=F[id][6]*q,a),{k:0,p:0,c:0});
+function applyTheme(){const r=document.documentElement;if(S.theme)r.dataset.theme=S.theme;r.lang=S.lang;r.dir=AR()?'rtl':'ltr';document.title=AR()?'طبقي – نظام أكل':'Tabaqi – meal planner'}
+function qtxt(q,u){const [ua,ue,up,]=U[u];if(u==='free')return AR()?ua:ue;if(u==='g')return n(q)+' '+t('g');
+ const w=Math.floor(q+1e-9),f=Math.round((q-w)*4);
+ if(!AR()){const fr=['','¼','½','¾'][f];return(w?n(w):'')+fr+' '+(q>1?up:ue)}
+ if(w===0)return(f===1?'ربع ':f===2?'نص ':'¾ ')+ua;return n(w)+' '+ua+(f===1?' وربع':f===2?' ونص':f===3?' و¾':'')}
+function line(id,qq){const f=F[id];return{id,qq,name:fn(id),q:qtxt(qq,f[2]),g:f[3]>1&&!['pc','date','egg','slice','med','tub','can','tri','roll','sq','bisc'].includes(f[2])?'≈ '+n(qq*f[3])+' '+t('g'):''}}
+function stepOf(id,q){const u=F[id][2];return(u==='tbsp'||u==='tsp')&&q>=2?1:U[u][3]}
+function build(m,target){const b=macro(m),fx=m[4].filter(x=>x[2]).reduce((a,[id,q])=>a+F[id][4]*q,0);
+ const k=Math.min(2.2,Math.max(.5,(target-fx)/(b.k-fx||1)));let o={items:[],k:0,p:0,c:0};
+ m[4].forEach(([id,q,f])=>{const st=stepOf(id,q*k);const qq=f?q:Math.max(st,Math.round(q*k/st)*st);add(o,id,qq)});return o}
+function add(o,id,qq){const f=F[id];o.k+=f[4]*qq;o.p+=f[5]*qq;o.c+=f[6]*qq;o.items.push(line(id,qq))}
+function compose(x){const K=S.kcal*share(x),P=S.prot*share(x)*(S.diet==='high'?1.05:1);const bm=S.bm[x]||{};const plist=protList(x);
+ const pid=plist.includes(bm.p)?bm.p:plist[0],cid=bm.c&&(bm.c==='none'||BC[x].includes(bm.c))?bm.c:(S.diet==='low'&&x!=='b'?'none':BC[x][0]);const o={items:[],k:0,p:0,c:0,pid,cid};
+ if(!pid)return o;const pf=F[pid];let q=(P*.8)/pf[5];q=Math.min(q,K*.65/pf[4]);
+ if(pid==='egg')q=Math.min(q,4);if(pid==='greek')q=Math.min(q,2);if(pid==='qareesh')q=Math.min(q,250);if(pid==='tuna')q=Math.min(q,2);
+ const st=U[pf[2]][3];q=Math.max(st,Math.round(q/st)*st);add(o,pid,q);
+ if(x==='b')add(o,'cuc',1);else{add(o,'salad',1);if(x==='l')add(o,'veg',1)}
+ if(x!=='b'&&LEAN.includes(pid))add(o,'oil',1);if(S.diet==='low'&&x!=='b')add(o,'tahina',1);
+ if(cid!=='none'){const cf=F[cid];let rem=K-o.k;if(rem>50){let cq=rem/cf[4];if(S.diet==='low')cq=Math.min(cq,(110*share(x))/cf[6]);const cs=stepOf(cid,cq);cq=Math.max(cs,Math.round(cq/cs)*cs);add(o,cid,cq)}}
+ return o}
+function protList(x){return(BP[x]||[]).filter(id=>{const g=(F[id][7]||'').split(' ');if(S.diet==='veg'&&g.some(z=>['meat','poultry','fish'].includes(z)))return false;return!g.some(z=>S.ex.includes(z))})}
+function okDiet(m){const g=tagsOf(m),b=macro(m),sn=m[0]==='s';
+ if(S.diet==='veg'&&g.some(z=>['meat','poultry','fish'].includes(z)))return false;if(S.diet==='med'&&g.includes('proc'))return false;
+ if(S.diet==='low'&&b.c*4/b.k>(sn?.5:.4))return false;if(S.diet==='high'&&b.p*4/b.k<(sn?.12:.22))return false;return true}
+function pool(x){const base=M.map((m,i)=>[m,i]).filter(([m])=>m[0]===x&&(!S.out||m[3])&&!tagsOf(m).some(g=>S.ex.includes(g)));const d=base.filter(([m])=>okDiet(m));return d.length?d:base}
+function pick(x,avoid){const p=pool(x);if(!p.length)return -1;let c=p.filter(([,i])=>i!==avoid);if(!c.length)c=p;
+ c.sort((a,b)=>macro(b[0]).p/macro(b[0]).k-macro(a[0]).p/macro(a[0]).k);c=c.slice(0,Math.max(3,Math.ceil(c.length*.7)));return c[Math.floor(Math.random()*c.length)][1]}
+function ensure(){for(const x of types()){if(!pool(x).some(([,i])=>i===S.picks[x]))S.picks[x]=pick(x)}}
+function mealOut(x){if(S.mode[x]==='b'&&x!=='s')return compose(x);const i=S.picks[x];return i>=0&&i!=null?build(M[i],S.kcal*share(x)):null}
+function totals(){return types().reduce((a,x)=>{const o=mealOut(x);if(o){a.k+=o.k;a.p+=o.p;a.c+=o.c}return a},{k:0,p:0,c:0})}
+function genDay(used={}){let best=null,bs=1e9;for(let r=0;r<90;r++){const d={};let k=0,p=0,c=0,pen=0;for(const x of types()){const pl=pool(x);if(!pl.length){d[x]=-1;continue}const [m,i]=pl[Math.floor(Math.random()*pl.length)];d[x]=i;const o=build(m,S.kcal*share(x));k+=o.k;p+=o.p;c+=o.c;pen+=(used[i]||0)*.08}
+ const sc=Math.abs(k-S.kcal)/S.kcal+1.5*Math.max(0,S.prot-p)/S.prot+(S.diet==='low'?Math.max(0,c-130)/130:0)+pen;if(sc<bs){bs=sc;best=d}}return best}
+function calc(){const w=+S.w,h=+S.h,a=+S.age;const bmr=10*w+6.25*h-5*a+(S.sex==='m'?5:-161);const tdee=bmr*[1.2,1.375,1.55,1.725][S.act];
+ const bmi=w/((h/100)**2);let goal=S.goal,under=false;if(goal==='lose'&&bmi<18.5){goal='keep';under=true}
+ const def=goal==='lose'?Math.min(750,Math.max(500,tdee*.25)):goal==='gain'?-300:0;let kcal=Math.round((tdee-def)/50)*50;kcal=Math.max(kcal,S.sex==='m'?1500:1200);
+ const ref=bmi>27?27*(h/100)**2+.25*(w-27*(h/100)**2):w;return{kcal,ref,bmi,loss:goal==='lose'?(tdee-kcal)*7/7700:0,under,goal}}
+function recDiet(){if(S.mode0!=='new')return'bal';const c=calc();return c.goal==='gain'||(c.goal==='lose'&&c.bmi>=30)?'high':c.goal==='lose'?'bal':'med'}
+function setProt(){const f=DIET[S.diet][0];S.prot=S.ref?Math.round(S.ref*f/5)*5:Math.round(S.kcal*(S.diet==='high'||S.diet==='low'?.3:.25)/4/5)*5}
+const top=()=>`<div class="top"><span class="logo">${t('app')}</span><div class="acts"><button class="ico" id="lang" aria-label="Language">${t('lang')}</button><button class="ico" id="theme" aria-label="${t('theme')}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div></div>`;
+const foot=()=>`<footer class="wrap">${t('foot')}</footer>`;
+const seg=(name,opts,val)=>`<div class="seg" data-seg="${name}">${opts.map(([l,v])=>`<button type="button" data-v="${v}" aria-pressed="${String(v)===String(val)}">${l}</button>`).join('')}</div>`;
+const digits=v=>+String(v).replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace('٫','.');
+function start(){app.innerHTML=`<section class="band"><div class="wrap">${top()}<h1>${AR()?'كام سعر محتاج؟ وتاكل إيه؟':'How much should you eat, and what?'}</h1><p style="margin-top:8px;font-size:18px">${t('tag')}</p>
+<div class="choices"><button class="choice" data-go="new"><span class="sign">${t('newT')}</span>${t('newD')}</button><button class="choice alt" data-go="known"><span class="sign">${t('knownT')}</span>${t('knownD')}</button></div></div></section>
+<div class="wrap tips"><h2>${t('how')}</h2><ul>${t('hows').map(x=>`<li>${x}</li>`).join('')}</ul></div>${foot()}`}
+function formNew(){app.innerHTML=`<section class="band"><div class="wrap">${top()}<button class="btn ghost small" data-go="start">${t('back')}</button><h1 style="margin-top:14px">${t('yourData')}</h1><p>${t('five')}</p></div></section>
+<form class="wrap form" id="fn" novalidate><div class="f"><b>${t('sex')}</b>${seg('sex',[[t('male'),'m'],[t('female'),'f']],S.sex)}</div>
+<div class="row3"><label class="f">${t('age')}<input inputmode="numeric" id="age" value="${S.age}" placeholder="30"></label><label class="f">${t('height')}<input inputmode="numeric" id="h" value="${S.h}" placeholder="170"></label><label class="f">${t('weight')}<input inputmode="decimal" id="w" value="${S.w}" placeholder="85"></label></div>
+<label class="f">${t('activity')}<select id="act">${t('acts').map((a,i)=>`<option value="${i}"${i==S.act?' selected':''}>${a}</option>`).join('')}</select></label>
+<div class="f"><b>${t('goal')}</b>${seg('goal',[[t('lose'),'lose'],[t('keep'),'keep'],[t('gain'),'gain']],S.goal)}</div><p class="err" id="err" role="alert"></p><button class="btn" type="submit">${t('calc')}</button></form>${foot()}`;
+ $('#fn').onsubmit=e=>{e.preventDefault();const a=digits($('#age').value),h=digits($('#h').value),w=digits($('#w').value);S.act=+$('#act').value;const er=$('#err');
+  if(!(a>=18&&a<=80))return er.textContent=a&&a<18?t('eAge18'):t('eAge');if(!(h>=130&&h<=220))return er.textContent=t('eH');if(!(w>=35&&w<=300))return er.textContent=t('eW');
+  Object.assign(S,{age:a,h,w,mode0:'new'});const c=calc();S.kcal=c.kcal;S.ref=c.ref;S.diet=recDiet();setProt();S.picks={};S.week=null;ensure();save();go('plan')}}
+function formKnown(){app.innerHTML=`<section class="band"><div class="wrap">${top()}<button class="btn ghost small" data-go="start">${t('back')}</button><h1 style="margin-top:14px">${t('kQ')}</h1></div></section>
+<form class="wrap form" id="fk" novalidate><label class="f">${t('kL')}<input inputmode="numeric" id="k" value="${S.mode0==='known'?S.kcal:''}" placeholder="1800"></label><label class="f">${t('kwL')}<input inputmode="decimal" id="kw" value="${S.mode0==='known'?S.w:''}"></label>
+<p class="err" id="err" role="alert"></p><button class="btn" type="submit">${t('go')}</button></form>${foot()}`;
+ $('#fk').onsubmit=e=>{e.preventDefault();const k=digits($('#k').value),w=digits($('#kw').value);if(!(k>=1200&&k<=4500))return $('#err').textContent=t('eK');
+  S.kcal=Math.round(k/50)*50;S.w=w>=35&&w<=300?w:'';S.ref=S.w?Math.min(S.w,95):0;S.mode0='known';S.diet='bal';setProt();S.picks={};S.week=null;ensure();save();go('plan')}}
+function plate(){let o=0;const C=2*Math.PI*70;return`<svg class="plate" viewBox="0 0 200 200" role="img" aria-label="${t('kcal')}"><circle cx="100" cy="104" r="96" fill="rgba(0,0,0,.2)"/><circle cx="100" cy="100" r="96" fill="var(--plate)"/><circle cx="100" cy="100" r="82" fill="var(--plate2)"/>
+${types().map(x=>{const f=share(x),s=`<circle cx="100" cy="100" r="70" fill="none" stroke="${COL[x]}" stroke-width="22" stroke-dasharray="${f*C-3} ${C}" stroke-dashoffset="${-o*C}" transform="rotate(-90 100 100)"/>`;o+=f;return s}).join('')}
+<text x="100" y="100" text-anchor="middle" font-family="Lalezar,Readex Pro,Tahoma" font-size="30" font-weight="600" fill="var(--ink)">${n(S.kcal)}</text><text x="100" y="124" text-anchor="middle" font-size="14" fill="var(--muted)">${t('kcal')}</text></svg>`}
+function itemsHTML(o){return`<ul class="items">${o.items.map(x=>`<li><span>${x.name}</span><span class="q">${x.q}${x.g?`<small>${x.g}</small>`:''}</span></li>`).join('')}</ul>`}
+function mealHTML(x,fresh){const K=S.kcal*share(x),bmode=S.mode[x]==='b'&&x!=='s';
+ let h=`<section class="meal${fresh?' fresh':''}" id="m-${x}"><div class="mh"><h2><span class="dot" style="background:${COL[x]}"></span>${mlabel(x)}</h2><span class="k">${t('target')} ${n(K)} ${t('kcal')}</span></div>`;
+ if(x!=='s')h+=`<div class="tabs"><button data-mode="${x}:r" aria-pressed="${!bmode}">${t('ready')}</button><button data-mode="${x}:b" aria-pressed="${bmode}">${t('build')}</button></div>`;
+ let o;if(bmode){o=compose(x);const pl=protList(x);
+  h+=`<p class="lbl">${t('pickP')}</p><div class="chips">${pl.map(id=>`<button class="chip" data-bp="${x}:${id}" aria-pressed="${id===o.pid}">${fn(id).split(' (')[0]}</button>`).join('')}</div>
+<p class="lbl">${t('pickC')}</p><div class="chips">${BC[x].map(id=>`<button class="chip" data-bc="${x}:${id}" aria-pressed="${id===o.cid}">${id==='none'?t('none'):fn(id).split(' (')[0]}</button>`).join('')}</div>${itemsHTML(o)}`}
+ else{const i=S.picks[x];if(i<0||i==null)return h+`<p class="note">${t('noOpt')}</p></section>`;const m=M[i];o=build(m,K);
+  h+=`<p class="mname">${mn(m)}${m[3]?`<span class="tag">${t('outside')}</span>`:''}</p>${itemsHTML(o)}`}
+ return h+`<div class="mfoot"><span class="k">${n(o.k)} ${t('kcal')} · ${t('prot')} ${n(o.p)} ${t('g')} · ${t('carb')} ${n(o.c)} ${t('g')}</span>${bmode?'':`<div class="acts"><button class="btn small" data-new="${x}">${t('another')}</button><button class="btn ghost small" data-list="${x}">${t('choose')}</button></div>`}</div>${logRow(x)}</section>`}
+function hint(tt){return tt.p<S.prot*.8?t('hintP'):tt.k<S.kcal*.9?t('hintLo'):tt.k>S.kcal*1.1?t('hintHi'):''}
+function plan(){ensure();const c=S.mode0==='new'?calc():null,tt=totals(),rec=recDiet();
+ app.innerHTML=`<section class="band"><div class="wrap">${top()}<div class="mh"><button class="btn ghost small" data-go="${S.mode0==='known'?'known':'new'}">${t('edit')}</button><button class="btn ghost small" data-go="start">${t('restart')}</button></div>
+<div class="res" style="margin-top:18px"><div><p>${t('need')}</p><p class="big">${n(S.kcal)} <span style="font-size:.4em">${t('kcal')}</span></p>
+<div class="stats"><span>${t('prot')}: <b>${n(S.prot)} ${t('g')}</b></span>${c?`<span>${t('bmi')}: <b>${n(c.bmi,1)}</b></span>${c.loss?`<span>${t('loss')}: <b>${n(c.loss,1)} ${t('wk')}</b></span>`:''}`:''}</div>${c&&c.under?`<p class="note" style="color:#fff">${t('under')}</p>`:''}</div>${plate()}</div>
+<div class="legend">${types().map(x=>`<span><i style="background:${COL[x]}"></i>${mlabel(x)} ${n(share(x)*100)}٪</span>`).join('').replace(/٪/g,AR()?'٪':'%')}</div></div></section>
+<div class="wrap"><div class="tools"><div class="diet"><b>${t('dietH')}</b><div class="chips">${Object.keys(DIET).map(k=>`<button class="chip" data-diet="${k}" aria-pressed="${S.diet===k}">${t('D')[k][0]}${k===rec?`<span class="rec">${t('rec')}</span>`:''}</button>`).join('')}</div>
+<p>${t('D')[S.diet][1]}</p>${S.diet===rec&&t('why')[rec]?`<p class="hint">${t('why')[rec]}</p>`:''}<p class="hint">${t('dietNote')}</p></div>
+<b>${t('noEat')}</b><div class="chips">${Object.entries(t('ex')).map(([k,l])=>`<button class="chip" data-ex="${k}" aria-pressed="${S.ex.includes(k)}">${l}</button>`).join('')}<button class="chip" data-out aria-pressed="${S.out}">${t('out')}</button></div>
+<div class="acts"><button class="btn" id="all">${t('genDay')}</button><button class="btn ghost" data-go="week">${t('weekBtn')}</button><button class="btn ghost" data-go="log">${t('logBtn')}</button></div></div>
+<div id="meals">${types().map(x=>mealHTML(x)).join('')}</div>
+<div class="tips"><h2>${t('rulesH')}</h2><ul>${t('rules').map(r=>`<li>${r}</li>`).join('')}</ul><button class="btn ghost" id="copy">${t('copyDay')}</button><div id="copyBox"></div></div></div>${foot()}
+<div class="total"><div class="wrap"><div class="tl"><span>${t('today')} <b id="tk">${n(tt.k)}</b> ${t('of')} ${n(S.kcal)} ${t('kcal')}</span><span>${t('prot')} <b id="tp">${n(tt.p)}</b> ${t('g')} · ${t('carb')} <b id="tc">${n(tt.c)}</b> ${t('g')}</span></div>
+<div class="bar"><span id="tb" style="width:${Math.min(100,tt.k/S.kcal*100)}%"></span></div><p class="note" id="th">${hint(tt)}</p></div></div>`}
+function refresh(x){const el=$('#m-'+x);if(el)el.outerHTML=mealHTML(x,true);const tt=totals();$('#tk').textContent=n(tt.k);$('#tp').textContent=n(tt.p);$('#tc').textContent=n(tt.c);$('#tb').style.width=Math.min(100,tt.k/S.kcal*100)+'%';$('#th').textContent=hint(tt);save()}
+function genWeek(){const used={};S.week=[...Array(7)].map(()=>{const d=genDay(used);Object.values(d).forEach(i=>used[i]=(used[i]||0)+1);return d});S.got=[]}
+function shopList(){const A={};let ready=0;S.week.forEach(d=>types().forEach(x=>{const i=d[x];if(i==null||i<0)return;build(M[i],S.kcal*share(x)).items.forEach(o=>{if(READY.includes(o.id)){ready++;return}A[o.id]=(A[o.id]||0)+o.qq})}));
+ const kg=g=>g>=1000?n(Math.round(g/100)/10,1)+' '+t('kg'):n(Math.round(g/50)*50||50)+' '+t('g');
+ return{ready,groups:CAT.map((ids,ci)=>[t('cats')[ci],ids.split(' ').filter(id=>A[id]).map(id=>{const f=F[id],q=A[id];let s;
+  if(RAW[id])s=kg(q*RAW[id])+' '+t('raw');else if(RAWC[id])s=kg(q*RAWC[id])+' '+t('raw');else if(f[2]==='g')s=kg(q);else if(f[2]==='free')s=t('forM')(n(q));else s=qtxt(q,f[2]);
+  return[id,fn(id).replace(/ (مطبوخة?|مشوية أو في الفرن|مشوي)(?= |$)/g,'').replace(/^Cooked |, cooked|, grilled or baked/g,''),s]})]).filter(g=>g[1].length)}}
+function week(){if(!S.week||S.week.length!==7)genWeek();save();const L=shopList();
+ app.innerHTML=`<section class="band"><div class="wrap">${top()}<div class="mh"><button class="btn ghost small" data-go="plan">${t('backDay')}</button><button class="btn ghost small" id="regen">${t('newWeek')}</button></div><h1 style="margin-top:14px">${t('weekT')}</h1><p>${t('weekD')}</p></div></section>
+<div class="wrap"><div class="tips">${S.week.map((d,j)=>`<button class="opt" data-day="${j}"><span><b>${t('days')[j]}</b><br><span class="hint">${types().map(x=>d[x]>=0?mn(M[d[x]]):'—').join(AR()?'، ':', ')}</span></span><span>${t('open')}</span></button>`).join('')}</div>
+<div class="tips"><h2>${t('shopH')}</h2><p class="hint">${t('shopD')}</p>${L.groups.map(([c,its])=>`<p class="mname">${c}</p><div class="chips">${its.map(([id,nm,s])=>`<button class="chip" data-got="${id}" aria-pressed="${S.got.includes(id)}">${nm}: ${s}</button>`).join('')}</div>`).join('')}
+${L.ready?`<p class="note">${t('readyN')(n(L.ready))}</p>`:''}<button class="btn ghost" id="copyShop">${t('copyShop')}</button><div id="copyBox"></div></div></div>${foot()}`}
+function openList(x){$('#sheetT').textContent=t('chooseX')+' '+mlabel(x);$('#closeSheet').textContent=t('close');
+ $('#sheetList').innerHTML=pool(x).map(([m,i])=>{const b=build(m,S.kcal*share(x));return`<button class="opt" data-pick="${x}:${i}"><span>${mn(m)}${m[3]?`<span class="tag">${t('outS')}</span>`:''}</span><span>${n(b.k)} ${t('kcal')} · ${n(b.p)} ${t('g')}</span></button>`}).join('')||`<p class="note">${t('noOpt')}</p>`;
+ $('#sheet').hidden=false;$('#closeSheet').focus()}
+function dayText(){return t('today')+' '+n(S.kcal)+' '+t('kcal')+'\n'+types().map(x=>{const o=mealOut(x);if(!o)return'';const nm=S.mode[x]==='b'&&x!=='s'?'':': '+mn(M[S.picks[x]]);return'\n'+mlabel(x)+nm+'\n'+o.items.map(i=>'- '+i.name+': '+i.q).join('\n')}).join('\n')}
+function toast(s){const d=document.createElement('div');d.className='toast';d.textContent=s;document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
+function copy(txt){const fb=()=>{$('#copyBox').innerHTML='<textarea readonly></textarea>';$('#copyBox textarea').value=txt};try{navigator.clipboard.writeText(txt).then(()=>toast(t('copied')),fb)}catch(e){fb()}}
+
+const LX={ar:{logBtn:'سجلي ومتابعتي',logH:'سجّل:',ate:'أكلته',other:'أكلت حاجة تانية',skip:'مأكلتهاش',undo:'تراجع',st:{ok:'أكلته',other:'أكلت حاجة تانية',skip:'مأكلتهاش'},
+whatAte:'أكلت إيه؟',whatPh:'مثلًا: ٢ سندوتش كبدة وبيبسي',howMuch:'كان قد إيه؟',sizes:['أقل من المطلوب','زي المطلوب تقريبًا','أكتر شوية','أكتر بكتير'],orK:'أو اكتب السعرات لو عارفها',saveB:'سجّل',
+logT:'سجلي',logD:'كل يوم بتسجّل فيه، بتعرف التزمت قد إيه. دوس على أي يوم عشان تعدّله.',goodDays:'أيام ملتزم',streak:'ورا بعض',adh:'نسبة الالتزام',last28:'آخر ٤ أسابيع',
+stat:{good:'ملتزم',mid:'قريب من الهدف',off:'خرجت عن النظام',low:'أكلت أقل من اللازم',empty:'متسجلش'},
+wH:'وزنك',wL:'وزنك النهارده (كجم)',wSave:'سجّل الوزن',wChange:(a,b)=>`من ${a} لـ ${b} كجم`,mistH:'الأيام اللي خرجت فيها',noMist:'مفيش أيام خرجت فيها عن النظام. كمّل كده.',
+asPlan:'زي النظام',dayEdit:'يوم',backupH:'نسخة احتياطية',backupD:'البيانات محفوظة على الجهاز ده بس. انسخ النسخة الاحتياطية واحتفظ بيها، أو الصقها هنا عشان ترجّعها.',
+copyB:'انسخ النسخة الاحتياطية',restoreB:'رجّع من نسخة',restored:'رجعت البيانات',badB:'النسخة دي مش سليمة',lowNote:'أكلت أقل من ٧٠٪ من هدفك. الأكل القليل جدًا بيخليك تجوع وتاكل أكتر بعدين.',total:'المجموع'},
+en:{logBtn:'My log',logH:'Log it:',ate:'Ate it',other:'Ate something else',skip:'Skipped',undo:'Undo',st:{ok:'Ate it',other:'Ate something else',skip:'Skipped'},
+whatAte:'What did you eat?',whatPh:'e.g. 2 liver sandwiches and a soda',howMuch:'How big was it?',sizes:['Less than planned','About as planned','A bit more','A lot more'],orK:'Or type the calories if you know them',saveB:'Save',
+logT:'My log',logD:'Every day you log shows how closely you followed the plan. Tap a day to edit it.',goodDays:'On-plan days',streak:'In a row',adh:'Adherence',last28:'Last 4 weeks',
+stat:{good:'On plan',mid:'Close to target',off:'Off plan',low:'Ate too little',empty:'Not logged'},
+wH:'Your weight',wL:"Today's weight (kg)",wSave:'Save weight',wChange:(a,b)=>`From ${a} to ${b} kg`,mistH:'Off-plan days',noMist:'No off-plan days. Keep going.',
+asPlan:'As planned',dayEdit:'Day',backupH:'Backup',backupD:'Your data is stored on this device only. Copy the backup and keep it, or paste one here to restore.',
+copyB:'Copy backup',restoreB:'Restore from backup',restored:'Data restored',badB:'That backup is not valid',lowNote:'You ate under 70% of your target. Eating far too little leads to hunger and overeating later.',total:'Total'}};
+Object.assign(TX.ar,LX.ar);Object.assign(TX.en,LX.en);
+const dk=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>dk(new Date());
+function dayStat(key){const L=S.log[key];const m=L&&L.m||{};const xs=Object.keys(m);if(!xs.length)return'empty';const k=xs.reduce((a,x)=>a+(m[x].k||0),0);
+ const all=types().every(x=>m[x]);if(k>S.kcal*1.2)return'off';if(all&&k<S.kcal*.7)return'low';
+ const clean=xs.every(x=>m[x].st==='ok'||(m[x].st==='other'&&m[x].k<=S.kcal*share(x)*1.2));
+ return all&&clean&&Math.abs(k-S.kcal)<=S.kcal*.12?'good':'mid'}
+function logSet(key,x,e){S.log[key]=S.log[key]||{m:{}};S.log[key].m=S.log[key].m||{};if(e)S.log[key].m[x]=e;else delete S.log[key].m[x];save()}
+function logRow(x){const L=(S.log[today()]||{}).m;const e=L&&L[x];
+ if(e)return`<div class="logged"><span>${t('st')[e.st]}${e.name?': '+esc(e.name):''} · ${n(e.k)} ${t('kcal')}</span><button class="btn ghost small" data-unlog="${today()}|${x}">${t('undo')}</button></div>`;
+ return`<div class="logrow"><span class="k">${t('logH')}</span><button class="btn ghost small" data-log="${today()}|${x}|ok">${t('ate')}</button><button class="btn ghost small" data-log="${today()}|${x}|other">${t('other')}</button><button class="btn ghost small" data-log="${today()}|${x}|skip">${t('skip')}</button></div>`}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+function doLog(key,x,st){const K=S.kcal*share(x);
+ if(st==='skip')return logSet(key,x,{st,k:0,p:0});
+ if(st==='ok'){if(key===today()){const o=mealOut(x);const nm=S.mode[x]==='b'&&x!=='s'?o.items.map(i=>i.name.split(' (')[0]).slice(0,2).join(' + '):mn(M[S.picks[x]]);return logSet(key,x,{st,name:nm,k:Math.round(o.k),p:Math.round(o.p)})}
+  return logSet(key,x,{st,name:t('asPlan'),k:Math.round(K),p:Math.round(S.prot*share(x))})}
+ openSheet(mlabel(x),`<form id="of" class="form" style="padding:8px 0"><label class="f">${t('whatAte')}<input id="ow" placeholder="${t('whatPh')}"></label>
+<div class="f"><b>${t('howMuch')}</b>${seg('osz',t('sizes').map((l,i)=>[l,i]),1)}</div><label class="f">${t('orK')}<input id="ok" inputmode="numeric"></label><button class="btn" type="submit">${t('saveB')}</button></form>`);
+ let sz=1;$('#of [data-seg=osz]').addEventListener('click',e=>{const b=e.target.closest('button');if(b){sz=+b.dataset.v}},true);
+ $('#of').onsubmit=e=>{e.preventDefault();const kk=digits($('#ok').value);const k=kk>0?kk:Math.round(K*[.6,1,1.4,2][sz]);logSet(key,x,{st:'other',name:$('#ow').value.trim().slice(0,80),k,p:0});closeSheet();rerender()}}
+function rerender(){S.view==='log'?logView():S.view==='plan'?plan():0}
+function openSheet(title,html){$('#sheetT').textContent=title;$('#closeSheet').textContent=t('close');$('#sheetList').innerHTML=html;$('#sheet').hidden=false;$('#closeSheet').focus()}
+function closeSheet(){$('#sheet').hidden=true}
+function dayEditor(key){const L=(S.log[key]||{}).m||{};const dt=new Date(key+'T12:00');
+ openSheet(t('dayEdit')+' '+dt.toLocaleDateString(AR()?'ar-EG':'en-GB',{weekday:'long',day:'numeric',month:'long'}),types().map(x=>{const e=L[x];
+  return`<div class="dayrow"><b>${mlabel(x)}</b>${e?`<p>${t('st')[e.st]}${e.name?': '+esc(e.name):''} · ${n(e.k)} ${t('kcal')}</p>`:''}<div class="acts" style="margin-top:8px"><button class="btn ghost small" data-log="${key}|${x}|ok">${t('asPlan')}</button><button class="btn ghost small" data-log="${key}|${x}|other">${t('other')}</button><button class="btn ghost small" data-log="${key}|${x}|skip">${t('skip')}</button>${e?`<button class="btn ghost small" data-unlog="${key}|${x}">${t('undo')}</button>`:''}</div></div>`}).join('')+`<p class="note">${t('total')}: ${n(Object.values(L).reduce((a,e)=>a+e.k,0))} ${t('kcal')} · ${t('stat')[dayStat(key)]}</p>`)}
+function logView(){const days=[...Array(28)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-27+i);return d});
+ const logged=Object.keys(S.log).filter(k=>dayStat(k)!=='empty').sort();const good=logged.filter(k=>dayStat(k)==='good');
+ let streak=0;for(let i=0;i<400;i++){const d=new Date();d.setDate(d.getDate()-i);const st=dayStat(dk(d));if(st==='good')streak++;else if(i===0&&st==='empty')continue;else break}
+ const W=Object.keys(S.log).filter(k=>S.log[k].w).sort().map(k=>[k,S.log[k].w]);const off=logged.filter(k=>dayStat(k)==='off'||Object.values(S.log[k].m||{}).some(e=>e.st!=='ok')).reverse().slice(0,10);
+ app.innerHTML=`<section class="band"><div class="wrap">${top()}<button class="btn ghost small" data-go="plan">${t('backDay')}</button><h1 style="margin-top:14px">${t('logT')}</h1><p>${t('logD')}</p>
+<div class="kpis"><div><p class="big">${n(good.length)}</p><p>${t('goodDays')}</p></div><div><p class="big">${n(streak)}</p><p>${t('streak')}</p></div><div><p class="big">${logged.length?n(good.length/logged.length*100):'—'}${logged.length?(AR()?'٪':'%'):''}</p><p>${t('adh')}</p></div></div></div></section>
+<div class="wrap"><div class="tips"><h2>${t('last28')}</h2><div class="cal">${days.map(d=>{const k=dk(d),st=dayStat(k);return`<button class="${st}${k===today()?' today':''}" data-dayed="${k}" aria-label="${k}: ${t('stat')[st]}">${n(d.getDate())}</button>`}).join('')}</div>
+<div class="legend">${['good','mid','off','low','empty'].map(s=>`<span><i class="${s}" style="background:${{good:'var(--leaf)',mid:'#f0b429',off:'var(--tomato)',low:'#8fb3a0',empty:'var(--card)'}[s]}"></i>${t('stat')[s]}</span>`).join('')}</div>
+${dayStat(today())==='low'?`<p class="note">${t('lowNote')}</p>`:''}</div>
+<div class="tips"><h2>${t('wH')}</h2><form id="wf" class="acts"><input id="wv" inputmode="decimal" aria-label="${t('wL')}" placeholder="${t('wL')}" style="min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);font-size:16px;flex:1"><button class="btn" type="submit">${t('wSave')}</button></form>
+${W.length>1?`<p>${t('wChange')(n(W[0][1],1),n(W[W.length-1][1],1))}</p><svg class="spark" id="spark" role="img" aria-label="${t('wH')}"></svg>`:''}</div>
+<div class="tips"><h2>${t('mistH')}</h2>${off.length?off.map(k=>{const m=S.log[k].m;return`<button class="opt" data-dayed="${k}"><span><b>${new Date(k+'T12:00').toLocaleDateString(AR()?'ar-EG':'en-GB',{weekday:'short',day:'numeric',month:'short'})}</b><br><span class="hint">${Object.keys(m).filter(x=>m[x].st!=='ok').map(x=>mlabel(x)+': '+(m[x].st==='skip'?t('st').skip:esc(m[x].name||'—'))).join(AR()?'، ':', ')}</span></span><span>${n(Object.values(m).reduce((a,e)=>a+e.k,0))} ${t('kcal')}</span></button>`}).join(''):`<p class="hint">${t('noMist')}</p>`}</div>
+<div class="tips"><h2>${t('backupH')}</h2><p class="hint">${t('backupD')}</p><div class="acts"><button class="btn ghost" id="bk">${t('copyB')}</button><button class="btn ghost" id="rs">${t('restoreB')}</button></div><div id="copyBox"></div></div></div>${foot()}`;
+ $('#wf').onsubmit=e=>{e.preventDefault();const v=digits($('#wv').value);if(v>=35&&v<=300){S.log[today()]=S.log[today()]||{m:{}};S.log[today()].w=v;save();logView()}};
+ const sp=$('#spark');if(sp){const draw=()=>{const Wd=sp.clientWidth,H=sp.clientHeight,vs=W.map(z=>z[1]),mn_=Math.min(...vs)-1,mx=Math.max(...vs)+1;const X=i=>12+i*(Wd-24)/(W.length-1),Y=v=>10+(mx-v)/(mx-mn_)*(H-30);
+  sp.innerHTML=`<polyline fill="none" stroke="var(--leaf)" stroke-width="3" points="${W.map((z,i)=>X(i)+','+Y(z[1])).join(' ')}"/>${W.map((z,i)=>`<circle cx="${X(i)}" cy="${Y(z[1])}" r="4" fill="var(--leaf)"/>`).join('')}`};const ro=new ResizeObserver(draw);ro.observe(sp)}}
+function go(v){S.view=v;applyTheme();({start,new:formNew,known:formKnown,plan,week,log:logView})[v]();window.scrollTo(0,0)}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(b.id==='lang'){S.lang=AR()?'en':'ar';save();return go(S.view)}
+ if(b.id==='theme'){const cur=S.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');S.theme=cur==='dark'?'light':'dark';save();return applyTheme()}
+ if(d.go)return go(d.go);
+ if(b.parentElement&&b.parentElement.dataset.seg){S[b.parentElement.dataset.seg]=d.v;[...b.parentElement.children].forEach(z=>z.setAttribute('aria-pressed',z===b));return}
+ if(d.new){S.picks[d.new]=pick(d.new,S.picks[d.new]);return refresh(d.new)}
+ if(d.list)return openList(d.list);
+ if(d.pick){const[x,i]=d.pick.split(':');S.picks[x]=+i;S.mode[x]='r';$('#sheet').hidden=true;refresh(x);return $('#m-'+x).scrollIntoView({block:'start',behavior:'smooth'})}
+ if(d.mode){const[x,m]=d.mode.split(':');S.mode[x]=m;return refresh(x)}
+ if(d.bp){const[x,id]=d.bp.split(':');S.bm[x]={...S.bm[x],p:id};return refresh(x)}
+ if(d.bc){const[x,id]=d.bc.split(':');S.bm[x]={...S.bm[x],c:id};return refresh(x)}
+ if(d.diet){S.diet=d.diet;setProt();S.week=null;S.bm={};ensure();save();return plan()}
+ if(b.id==='closeSheet')return closeSheet();
+ if(d.log){const[k,x,st]=d.log.split('|');doLog(k,x,st);if(st!=='other'){if(!$('#sheet').hidden&&S.view==='log')dayEditor(k);else if(!$('#sheet').hidden)dayEditor(k);rerender()}return}
+ if(d.unlog){const[k,x]=d.unlog.split('|');logSet(k,x,null);if(!$('#sheet').hidden)dayEditor(k);return rerender()}
+ if(d.dayed)return dayEditor(d.dayed);
+ if(b.id==='bk')return copy(JSON.stringify({v:2,S}));
+ if(b.id==='rs'){openSheet(t('restoreB'),`<form id="rf" class="form" style="padding:8px 0"><textarea id="rt" aria-label="${t('restoreB')}"></textarea><button class="btn" type="submit">${t('restoreB')}</button></form>`);
+  $('#rf').onsubmit=e=>{e.preventDefault();try{const j=JSON.parse($('#rt').value);if(!j.S||!j.S.kcal)throw 0;S={...S,...j.S};save();closeSheet();toast(t('restored'));go('log')}catch(x){toast(t('badB'))}};return}
+ if(d.ex){S.ex=S.ex.includes(d.ex)?S.ex.filter(z=>z!==d.ex):[...S.ex,d.ex];S.week=null;ensure();save();return plan()}
+ if('out' in d){S.out=!S.out;S.week=null;ensure();save();return plan()}
+ if(b.id==='all'){S.picks={...S.picks,...genDay()};types().forEach(x=>S.mode[x]='r');save();plan();document.querySelectorAll('.meal').forEach(m=>m.classList.add('fresh'));return}
+ if(d.day){S.picks={...S.week[+d.day]};S.mode={};save();return go('plan')}
+ if(b.id==='regen'){genWeek();return week()}
+ if(d.got){S.got=S.got.includes(d.got)?S.got.filter(z=>z!==d.got):[...S.got,d.got];b.setAttribute('aria-pressed',S.got.includes(d.got));return save()}
+ if(b.id==='copy')return copy(dayText());
+ if(b.id==='copyShop')return copy(t('shopH')+':\n'+shopList().groups.map(([c,its])=>'\n'+c+':\n'+its.map(z=>'- '+z[1]+': '+z[2]).join('\n')).join('\n'))});
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')e.target.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#sheet').hidden=true});
+go(S.view);
+try{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+}
+</script>
+</body>
+</html>
