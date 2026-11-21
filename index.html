@@ -122,6 +122,7 @@ textarea{width:100%;min-height:160px;border-radius:12px;border:1.5px solid var(-
 <body>
 <div id="app"></div>
 <div class="sheet" id="sheet" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetT"><div class="mh"><h2 id="sheetT"></h2><button class="btn ghost small" id="closeSheet"></button></div><div id="sheetList"></div></div></div>
+<script src="data.js"></script>
 <script>
 {
 // units: [ar, en, en plural, rounding step]
@@ -132,85 +133,9 @@ can:['علبة صغيرة','small can','small cans',.5],tub:['علبة','tub','t
 free:['براحتك','as you like','as you like',1],roll:['صباع','roll','rolls',1],sq:['مربع صغير','small square','small squares',1],
 bisc:['بسكوتة','biscuit','biscuits',1],qtr:['ربع فرخة','quarter chicken','quarter chickens',.5],box:['علبة صغيرة','small box','small boxes',.5],
 bowl:['بول','bowl','bowls',.5],piece:['قطعة','piece','pieces',1],bech:['قطعة ١٠×١٠ سم','10×10 cm piece','10×10 cm pieces',.5],
-manq:['منقوشة','manakish','manakish',.5],scup:['كوباية صغيرة','small cup','small cups',.5]};
-// foods: [ar, en, unit, grams/unit, kcal, protein, carbs, tags]
-const F={
-baladi:['عيش بلدي','Baladi bread','loaf',100,250,9,50],shami:['عيش شامي','Pita bread','loaf',80,220,7,45],toast:['توست أسمر','Brown toast','slice',30,75,3,13],
-foulSand:['سندوتش فول بعيش بلدي صغير (زيت خفيف)','Foul sandwich, small baladi bread (light oil)','sand',0,230,9,30,'legume'],
-taamSand:['سندوتش طعمية (قرصين)','Taameya sandwich (2 patties)','sand',0,260,7,32],
-foul:['فول مدمس','Foul medames','cup',200,220,15,40,'legume'],oil:['زيت (أي نوع)','Cooking oil (any)','tsp',5,45,0,0],tahina:['طحينة','Tahini','tbsp',15,90,3,3],
-qareesh:['جبنة قريش','Cottage cheese (areesh)','g',1,.95,.12,.03,'dairy'],roumy:['جبنة رومي','Roumy cheese','slice',15,57,3.5,.3,'dairy'],
-white:['جبنة بيضا قليلة الملح','Low-salt white cheese','g',1,2.6,.14,.02,'dairy'],triangle:['مثلث جبنة لايت','Light cheese wedge','tri',17,35,2,1,'dairy'],
-greek:['زبادي يوناني لايت','Light Greek yogurt','tub',170,110,17,6,'dairy'],yog:['زبادي لايت','Light yogurt','tub',105,50,4,5,'dairy'],
-milk:['لبن نص دسم','Semi-skimmed milk','cup',240,120,8,12,'dairy'],rayeb:['لبن رايب','Buttermilk (rayeb)','cup',240,130,8,12,'dairy'],
-oats:['شوفان','Oats','tbsp',8,30,1,5],honey:['عسل','Honey','tsp',7,21,0,6],almond:['لوز','Almonds','pc',1.2,7,.25,.25],
-banana:['موزة صغيرة','Small banana','pc',100,90,1,23],fruit:['فاكهة (تفاحة، برتقالة، كوب بطيخ…)','Fruit (apple, orange, cup of melon…)','serv',0,70,.5,17],
-dates:['تمر','Dates','date',10,25,.2,7],tuna:['تونة مصفّاة','Tuna, drained','can',100,160,25,0,'fish'],mayo:['مايونيز لايت','Light mayonnaise','tbsp',15,45,0,1],
-egg:['بيض مسلوق','Boiled eggs','egg',50,75,6,.5,'egg'],eggOm:['بيض (أومليت أو شكشوكة)','Eggs (omelette or shakshuka)','egg',50,75,6,.5,'egg'],
-luncheon:['لانشون فراخ','Chicken luncheon','slice',20,45,3,2,'poultry proc'],
-chicken:['صدور فراخ مشوية أو في الفرن','Chicken breast, grilled or baked','g',1,1.65,.31,0,'poultry'],thigh:['ورك فراخ من غير جلد','Skinless chicken thigh','g',1,1.8,.26,0,'poultry'],
-fish:['سمك مشوي (بلطي أو بوري)','Grilled fish (tilapia or mullet)','g',1,1.3,.26,0,'fish'],shrimp:['جمبري أو كاليماري مشوي','Grilled shrimp or calamari','g',1,1,.22,0,'fish'],
-beef:['لحمة بتلو مطبوخة','Lean veal, cooked','g',1,2,.28,0,'meat'],mince:['لحمة مفرومة قليلة الدهن','Lean minced beef','g',1,2.2,.26,0,'meat'],
-kofta:['كفتة مشوية','Grilled kofta','g',1,2.4,.2,.03,'meat'],tawook:['شيش طاووق مشوي','Shish tawook','g',1,1.7,.28,.02,'poultry'],
-liverD:['كبدة مطبوخة','Cooked liver','g',1,1.9,.26,.04,'meat'],pane:['بانيه فراخ في الفرن','Oven-baked breaded chicken','g',1,2.1,.27,.08,'poultry'],
-rice:['رز مطبوخ','Cooked rice','cup',200,260,5,56],pasta:['مكرونة مطبوخة','Cooked pasta','cup',140,220,8,43],
-potato:['بطاطس مسلوقة أو في الفرن','Boiled or baked potato','med',150,130,3,30],sweetp:['بطاطا مشوية','Roasted sweet potato','med',150,130,2,30],
-lentil:['عدس مطبوخ','Cooked lentils','cup',200,230,18,40,'legume'],lsoup:['شوربة عدس','Lentil soup','cup',240,150,9,22,'legume'],
-hummusD:['حمص بطحينة','Hummus','tbsp',30,70,2,6,'legume'],chick:['حمص الشام المشوي','Roasted chickpeas','cup',160,600,28,80,'legume'],
-molokhia:['ملوخية','Molokhia','cup',240,80,3,8],stew:['خضار مطبوخ (بامية، فاصوليا، بسلة)','Vegetable stew (okra, green beans, peas)','cup',240,110,4,15],
-veg:['خضار سوتيه','Sautéed vegetables','cup',150,70,2,10],salad:['سلطة خضرا','Green salad','plate',0,40,1,7],
-cuc:['خيار وطماطم وجرجير','Cucumber, tomato and rocket','free',0,20,1,4],mahshi:['محشي كرنب أو ورق عنب','Stuffed cabbage or vine leaves','roll',30,45,1,7],
-bech:['مكرونة بشاميل','Macarona béchamel','bech',250,450,20,40,'meat dairy'],koshari:['كشري بتقلية خفيفة','Koshari, light fried onions','box',0,600,18,105,'legume'],
-shawarma:['سندوتش شاورما فراخ عادي','Regular chicken shawarma sandwich','sand',0,450,25,45,'poultry proc'],
-quarter:['ربع فرخة مشوية من غير جلد','Grilled quarter chicken, skin off','qtr',0,300,40,0,'poultry'],
-burger:['برجر لحمة سنجل (مش كريسبي)','Single beef burger (not crispy)','sand',0,450,24,40,'meat proc'],
-gsand:['سندوتش فراخ مشوية','Grilled chicken sandwich','sand',0,400,30,40,'poultry'],
-pizza:['بيتزا وسط فراخ أو خضار','Medium chicken or veggie pizza','slice',0,220,10,26,'dairy proc'],
-sushi:['سوشي مش مقلي','Sushi (not fried)','piece',0,40,1.5,7,'fish'],
-manz:['منقوشة زعتر صغيرة','Small zaatar manakish','manq',0,300,7,40],manc:['منقوشة جبنة صغيرة','Small cheese manakish','manq',0,350,14,38,'dairy'],
-liver:['سندوتش كبدة اسكندراني','Alexandrian liver sandwich','sand',0,350,18,35,'meat proc'],hawawshi:['حواوشي صغير','Small hawawshi','sand',0,500,22,40,'meat proc'],
-bowl:['بول رز بالفراخ','Chicken rice bowl','bowl',0,550,35,65,'poultry'],caesar:['سلطة سيزر بالفراخ','Chicken Caesar salad','bowl',0,420,32,18,'poultry dairy'],
-popcorn:['فشار بمعلقة زيت','Popcorn (1 tsp oil)','cup',8,35,1,6],dark:['شوكولاتة دارك','Dark chocolate','sq',8,45,.6,3.5],
-ice:['آيس كريم','Ice cream','scup',100,130,2,15,'dairy'],dig:['بسكوت دايجستيف','Digestive biscuit','bisc',15,70,1,10],
-peanut:['فول سوداني','Peanuts','pc',1,6,.25,.15],pb:['زبدة فول سوداني','Peanut butter','tbsp',16,95,4,3]};
-// meals: [type, ar, en, outside, [[food, qty, fixed]]]
-const M=[
-['b','سندوتشين فول','Two foul sandwiches',1,[['foulSand',2],['cuc',1,1]]],['b','فول وجبنة رومي','Foul and roumy cheese',1,[['foulSand',1],['baladi',.5],['roumy',2],['cuc',1,1]]],
-['b','منقوشة زعتر ولبن رايب','Zaatar manakish and rayeb',1,[['manz',1],['rayeb',1]]],['b','فول وطعمية','Foul and taameya',1,[['foulSand',1],['taamSand',1],['cuc',1,1]]],
-['b','شوفان باللبن والموز','Oats with milk and banana',0,[['oats',8],['milk',1],['banana',1],['honey',1]]],['b','عيش وجبنة قريش','Bread and cottage cheese',0,[['baladi',1],['qareesh',150],['cuc',1,1]]],
-['b','زبادي يوناني بالشوفان','Greek yogurt with oats',0,[['greek',1],['oats',4],['fruit',1],['almond',7]]],['b','تونة بالتوست','Tuna on toast',0,[['toast',4],['tuna',1],['mayo',1],['cuc',1,1]]],
-['b','فول في البيت','Homemade foul',0,[['foul',1],['oil',1],['baladi',.5],['salad',1,1]]],['b','سندوتش لانشون وزبادي','Luncheon sandwich and yogurt',1,[['shami',1],['luncheon',3],['yog',1]]],
-['b','بيض مسلوق وعيش','Boiled eggs and bread',0,[['egg',2],['baladi',1],['cuc',1,1]]],['b','أومليت بالخضار وتوست','Veggie omelette and toast',0,[['eggOm',2],['oil',1],['toast',2],['cuc',1,1]]],
-['b','شكشوكة بالعيش','Shakshuka with bread',0,[['eggOm',3],['oil',1],['baladi',.5],['cuc',1,1]]],['b','سندوتش كبدة وسلطة','Liver sandwich and salad',1,[['liver',1],['salad',1,1]]],
-['b','توست بزبدة الفول السوداني','Peanut butter toast',0,[['toast',3],['pb',1],['banana',1]]],['b','عيش وجبنة بيضا','Bread and white cheese',1,[['baladi',1],['white',50],['cuc',1,1]]],
-['b','فول بالطحينة','Foul with tahini',0,[['foul',1],['tahina',1],['baladi',.5],['cuc',1,1]]],['b','حمص بطحينة وعيش','Hummus and bread',1,[['hummusD',4],['baladi',1],['cuc',1,1]]],
-['b','بانكيك شوفان','Oat pancakes',0,[['oats',6],['eggOm',2],['banana',1],['honey',1]]],
-['l','فراخ بالرز والخضار','Chicken, rice and vegetables',0,[['chicken',200],['rice',1],['veg',1],['salad',1,1]]],['l','ملوخية بالفراخ','Molokhia with chicken',0,[['molokhia',1.5],['chicken',200],['rice',1]]],
-['l','سمك مشوي بالرز','Grilled fish with rice',0,[['fish',200],['rice',1],['tahina',1],['salad',1,1]]],['l','مكرونة باللحمة المفرومة','Pasta with minced beef',0,[['pasta',1.5],['mince',100],['salad',1,1]]],
-['l','خضار مطبوخ باللحمة','Vegetable stew with meat',0,[['stew',1.5],['beef',150],['rice',1]]],['l','محشي مع فراخ','Mahshi with chicken',0,[['mahshi',8],['thigh',150],['salad',1,1]]],
-['l','كفتة مشوية بالعيش','Grilled kofta with bread',1,[['kofta',150],['baladi',1],['tahina',1],['salad',1,1]]],['l','مكرونة بشاميل وسلطة','Béchamel pasta and salad',0,[['bech',1],['salad',1,1]]],
-['l','عدس ورغيف','Lentils and bread',0,[['lentil',2],['baladi',1],['yog',1],['salad',1,1]]],['l','جمبري بالرز','Shrimp with rice',1,[['shrimp',200],['rice',1.5],['salad',1,1]]],
-['l','ربع فرخة مشوية','Grilled quarter chicken',1,[['quarter',1],['rice',.5],['baladi',.5],['salad',1,1]]],['l','شاورما فراخ وزبادي','Chicken shawarma and yogurt',1,[['shawarma',1],['yog',1],['salad',1,1]]],
-['l','برجر سنجل من غير بطاطس','Single burger, no fries',1,[['burger',1],['salad',1,1]]],['l','شيش طاووق بالعيش','Shish tawook with bread',1,[['tawook',200],['baladi',1],['salad',1,1]]],
-['l','بيتزا وسلطة','Pizza and salad',1,[['pizza',2],['salad',1,1]]],['l','كشري صغير','Small koshari',1,[['koshari',1]]],['l','سوشي','Sushi',1,[['sushi',12]]],
-['l','بول رز بالفراخ','Chicken rice bowl',1,[['bowl',1],['salad',1,1]]],['l','فراخ بالبطاطس في الفرن','Oven chicken and potatoes',0,[['chicken',200],['potato',2],['veg',1]]],
-['l','سندوتش فراخ مشوية وسلطة','Grilled chicken sandwich and salad',1,[['gsand',1],['salad',1,1]]],['l','بانيه في الفرن بالمكرونة','Oven pané with pasta',0,[['pane',150],['pasta',1],['salad',1,1]]],
-['l','كبدة بالرز','Liver with rice',0,[['liverD',150],['rice',1],['salad',1,1]]],['l','سلطة سيزر بالفراخ','Chicken Caesar salad',1,[['caesar',1],['baladi',.5]]],
-['l','بامية باللحمة','Okra with meat',0,[['stew',1.5],['beef',150],['baladi',.5]]],['l','حواوشي وسلطة','Hawawshi and salad',1,[['hawawshi',1],['salad',1,1]]],
-['l','عدس بجبة وبيض','Lentils with eggs',0,[['lentil',1.5],['egg',2],['baladi',.5],['salad',1,1]]],
-['d','تونة وسلطة','Tuna and salad',0,[['tuna',1],['baladi',.5],['salad',1,1]]],['d','جبنة قريش وفاكهة','Cottage cheese and fruit',0,[['qareesh',150],['baladi',.5],['fruit',1],['cuc',1,1]]],
-['d','زبادي يوناني وفاكهة','Greek yogurt and fruit',0,[['greek',1],['fruit',2],['almond',7]]],['d','سندوتش فراخ مشوية','Grilled chicken sandwich',1,[['gsand',1]]],
-['d','شوربة عدس','Lentil soup',0,[['lsoup',1.5],['baladi',.5]]],['d','فول وزبادي','Foul and yogurt',0,[['foul',.5],['baladi',.5],['yog',1],['salad',1,1]]],
-['d','فراخ وخضار','Chicken and vegetables',0,[['chicken',150],['veg',1],['salad',1,1]]],['d','سلطة تونة بالمكرونة','Tuna pasta salad',0,[['pasta',.5],['tuna',1],['yog',1],['salad',1,1]]],
-['d','لانشون وجبنة','Luncheon and cheese',1,[['luncheon',4],['roumy',1],['baladi',.5],['cuc',1,1]]],['d','بيض وجبنة بيضا','Eggs and white cheese',0,[['egg',2],['white',30],['toast',2],['cuc',1,1]]],
-['d','بطاطا وزبادي يوناني','Sweet potato and Greek yogurt',0,[['sweetp',1],['greek',1]]],['d','سندوتش فول وزبادي','Foul sandwich and yogurt',1,[['foulSand',1],['yog',1]]],
-['d','سمك وبطاطس','Fish and potato',0,[['fish',150],['potato',1],['salad',1,1]]],['d','شكشوكة','Shakshuka',0,[['eggOm',3],['oil',1],['toast',1],['cuc',1,1]]],
-['d','حمص بطحينة وخضار','Hummus and vegetables',1,[['hummusD',4],['shami',.5],['cuc',1,1],['yog',1]]],['d','سلطة فراخ','Chicken salad',0,[['chicken',120],['salad',1,1],['toast',1],['yog',1]]],
-['s','فاكهة وزبادي','Fruit and yogurt',0,[['fruit',1],['yog',1]]],['s','فاكهة ولوز','Fruit and almonds',0,[['fruit',1],['almond',10]]],['s','فشار','Popcorn',0,[['popcorn',3]]],
-['s','حمص الشام','Roasted chickpeas',1,[['chick',.25]]],['s','تمر ولبن','Dates and milk',0,[['dates',2],['milk',1]]],['s','شوكولاتة دارك','Dark chocolate',1,[['dark',3]]],
-['s','آيس كريم صغير','Small ice cream',1,[['ice',1]]],['s','شاي بلبن وبسكوت','Milky tea and biscuits',0,[['milk',.5],['dig',2]]],['s','سلطة فواكه بالزبادي','Fruit salad with yogurt',0,[['fruit',2],['yog',1]]],
-['s','جبنة وخيار','Cheese and cucumber',0,[['triangle',2],['cuc',1,1]]],['s','فول سوداني','Peanuts',1,[['peanut',15]]],['s','زبادي يوناني','Greek yogurt',1,[['greek',1]]],
-['s','فاكهة وجبنة قريش','Fruit and cottage cheese',0,[['fruit',1],['qareesh',100]]],['s','لبن بالموز','Banana milk',0,[['milk',1],['banana',1]]],['s','خيار وحمص بطحينة','Cucumber and hummus',0,[['cuc',1,1],['hummusD',3]]]];
+manq:['منقوشة','manakish','manakish',.5],pkt:['كيس','packet','packets',1],scup:['كوباية صغيرة','small cup','small cups',.5]};
+// foods and meals come from data.js
+const F=window.TD.F,M=window.TD.M;
 const TX={ar:{app:'طبقي',tag:'احسب السعرات اللي محتاجها، وخد اقتراحات أكل عادي بالكميات، تعمله في البيت أو تلاقيه برا.',newT:'أنا جديد',newD:'دخّل سنك وطولك ووزنك، وإحنا نحسبلك السعرات',
 knownT:'عارف سعراتي',knownD:'دخّل رقم السعرات، وابدأ في الاقتراحات على طول',how:'إزاي بيشتغل؟',hows:['بنقسم سعراتك على الوجبات حسب نوع الدايت اللي تختاره.','كل وجبة ليها اقتراح جاهز بالكميات، أو تركّبها بنفسك: تختار البروتين والكارب، والكميات بتتحسب لوحدها.','تقدر تعمل أسبوع كامل وليستة مشتريات.'],
 back:'رجوع',yourData:'بياناتك',five:'محتاجين ٥ حاجات بس.',sex:'النوع',male:'راجل',female:'ست',age:'السن',height:'الطول (سم)',weight:'الوزن (كجم)',activity:'حركتك في اليوم',
@@ -229,7 +154,7 @@ weekT:'أسبوعك',weekD:'٧ أيام متنوعة، وتحتهم ليستة �
 shopH:'ليستة المشتريات',shopD:'الكميات للأسبوع كله. اللحوم والرز والمكرونة والعدس محسوبين ني. دوس على الحاجة لما تشتريها.',readyN:n=>`وفيه ${n} حاجة هتشتريها جاهزة من برا.`,
 copyShop:'انسخ الليستة',raw:'ني',forM:n=>`لـ ${n} وجبة`,kg:'كيلو',cats:['بروتين','ألبان وجبن','عيش ونشويات','خضار وفاكهة','بقالة وتاني'],
 days:['السبت','الحد','الاتنين','التلات','الأربع','الخميس','الجمعة'],meals:{b:'الفطار',l:'الغدا',d:'العشا',s:'السناكس'},m16:{l:'الوجبة الأولى',d:'الوجبة التانية'},
-ex:{egg:'بيض',fish:'سمك وتونة',dairy:'ألبان',meat:'لحمة',poultry:'فراخ'},theme:'غيّر الوضع الفاتح والداكن',lang:'EN',
+cu:{all:'الكل',eg:'مصري',lv:'شامي',in:'عالمي',ff:'فاست فود',qk:'بيتي سريع'},search:'دوّر على أكلة…',count:n=>`${n} اختيار`,ex:{egg:'بيض',fish:'سمك وتونة',dairy:'ألبان',meat:'لحمة',poultry:'فراخ'},theme:'غيّر الوضع الفاتح والداكن',lang:'EN',
 foot:'الحسابات دي تقديرية، ومش بديل عن دكتور أو أخصائي تغذية. لو عندك سكر أو ضغط أو أي مرض مزمن، أو حامل أو بترضعي، استشير دكتورك الأول.',
 D:{bal:['متوازن','كل المجموعات بنسب معتدلة. أسهل نظام تكمّل عليه.'],high:['بروتين عالي','بروتين أكتر بيشبّعك وبيحافظ على عضلك وانت بتخس.'],
 low:['قليل الكارب','عيش ورز أقل (حوالي ١٠٠–١٣٠ جم كارب في اليوم)، وبروتين وخضار أكتر. ده مش كيتو.'],med:['متوسطي','سمك وبقوليات وخضار أكتر، ومن غير لحوم مصنّعة.'],
@@ -253,7 +178,7 @@ weekT:'Your week',weekD:'Seven varied days, with the shopping list below. Tap a 
 shopH:'Shopping list',shopD:'Amounts are for the whole week. Meat, rice, pasta and lentils are given raw. Tap an item once you have it.',readyN:n=>`Plus ${n} items you’ll buy ready-made outside.`,
 copyShop:'Copy list',raw:'raw',forM:n=>`for ${n} meals`,kg:'kg',cats:['Protein','Dairy and cheese','Bread and starches','Vegetables and fruit','Pantry and other'],
 days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],meals:{b:'Breakfast',l:'Lunch',d:'Dinner',s:'Snacks'},m16:{l:'First meal',d:'Second meal'},
-ex:{egg:'Eggs',fish:'Fish and tuna',dairy:'Dairy',meat:'Red meat',poultry:'Chicken'},theme:'Switch light and dark mode',lang:'عربي',
+cu:{all:'All',eg:'Egyptian',lv:'Levantine',in:'International',ff:'Fast food',qk:'Quick home'},search:'Search meals…',count:n=>`${n} options`,ex:{egg:'Eggs',fish:'Fish and tuna',dairy:'Dairy',meat:'Red meat',poultry:'Chicken'},theme:'Switch light and dark mode',lang:'عربي',
 foot:'These numbers are estimates and no substitute for a doctor or dietitian. If you have diabetes, high blood pressure or another chronic condition, or are pregnant or breastfeeding, check with your doctor first.',
 D:{bal:['Balanced','All food groups in moderate amounts. The easiest to stick with.'],high:['High protein','More protein keeps you full and protects muscle while you lose weight.'],
 low:['Lower carb','Less bread and rice (about 100–130 g carbs a day), more protein and vegetables. This is not keto.'],med:['Mediterranean','More fish, legumes and vegetables; no processed meat.'],
@@ -261,13 +186,10 @@ veg:['Vegetarian','No meat, poultry or fish. Protein comes from eggs, dairy and 
 why:{high:'Suggested because it helps you stay full while losing weight.',bal:'Suggested because it is the easiest to keep up.',med:'Suggested because it suits long-term maintenance.'}}};
 const DIET={bal:[1.6,.45],high:[1.8,.40],low:[1.7,0],med:[1.6,.45],veg:[1.4,.5],if16:[1.6,.45]};
 const COL={b:'#f0b429',l:'#e2412e',d:'#2f8f5b',s:'#8a5a2b'};
-const BP={b:['egg','qareesh','greek','tuna','foul','white'],l:['chicken','thigh','fish','shrimp','beef','kofta','tawook','tuna','egg','lentil'],d:['chicken','fish','tuna','egg','qareesh','greek','tawook','lentil','shrimp']};
-const BC={b:['baladi','shami','toast','oats','potato','none'],l:['rice','baladi','pasta','potato','sweetp','none'],d:['baladi','toast','rice','pasta','potato','sweetp','none']};
-const LEAN=['chicken','fish','shrimp','tuna','tawook','qareesh','greek','lentil'];
-const READY=['foulSand','taamSand','shawarma','quarter','burger','gsand','pizza','sushi','manz','manc','liver','bowl','koshari','hawawshi','caesar'];
-const CAT=['chicken thigh fish shrimp beef mince kofta tawook liverD pane tuna luncheon egg eggOm','qareesh roumy white triangle greek yog milk rayeb ice','baladi shami toast oats rice pasta potato sweetp lentil lsoup foul chick',
- 'molokhia stew veg salad cuc fruit banana dates mahshi','oil tahina honey almond mayo popcorn dark dig peanut pb hummusD bech'];
-const RAW={chicken:1.33,thigh:1.33,beef:1.4,mince:1.33,kofta:1.33,tawook:1.33,liverD:1.3,pane:1.2,fish:1.25,shrimp:1.2};const RAWC={rice:75,pasta:65,lentil:80,lsoup:40};
+const BP={b:['egg','qareesh','greek','tuna','foul','white','labneh','turkey','istanbuli'],l:['chicken','thigh','fish','fillet','salmon','shrimp','beef','kofta','kebab','steak','tawook','liverD','tuna','egg','lentil','wbeans'],d:['chicken','fish','tuna','sardine','egg','qareesh','greek','tawook','turkey','lentil','shrimp','salmon']};
+const BC={b:['baladi','shami','toast','fino','oats','tortilla','potato','none'],l:['rice','basmati','brownRice','baladi','pasta','potato','sweetp','freekeh','bulgur','couscous','none'],d:['baladi','toast','shami','tortilla','rice','pasta','potato','sweetp','none']};
+const LEAN=['chicken','fish','fillet','shrimp','tuna','tawook','qareesh','greek','lentil','turkey','sardine','wbeans'];
+const RAW={chicken:1.33,thigh:1.33,beef:1.4,mince:1.33,kofta:1.33,kebab:1.33,steak:1.3,lamb:1.4,tawook:1.33,liverD:1.3,chLiver:1.3,chShaw:1.3,pane:1.2,sausage:1.05,fish:1.25,fillet:1.25,salmon:1.2,friedFish:1.25,shrimp:1.2};const RAWC={rice:75,basmati:75,brownRice:75,pasta:65,freekeh:60,bulgur:60,couscous:60,lentil:80,lsoup:40,wbeans:90,chickpea:65,balila:60};
 const $=s=>document.querySelector(s),app=$('#app');
 let S={view:'start',lang:'ar',sex:'m',age:'',h:'',w:'',act:0,goal:'lose',kcal:0,prot:0,diet:'bal',ex:[],out:false,picks:{},mode:{},bm:{},week:null,got:[],log:{}};
 try{const s=JSON.parse(localStorage.getItem('tabaqi2'));if(s){S={...S,...s};S.view=S.kcal?'plan':'start'}}catch(e){}
@@ -305,12 +227,13 @@ function okDiet(m){const g=tagsOf(m),b=macro(m),sn=m[0]==='s';
  if(S.diet==='veg'&&g.some(z=>['meat','poultry','fish'].includes(z)))return false;if(S.diet==='med'&&g.includes('proc'))return false;
  if(S.diet==='low'&&b.c*4/b.k>(sn?.5:.4))return false;if(S.diet==='high'&&b.p*4/b.k<(sn?.12:.22))return false;return true}
 function pool(x){const base=M.map((m,i)=>[m,i]).filter(([m])=>m[0]===x&&(!S.out||m[3])&&!tagsOf(m).some(g=>S.ex.includes(g)));const d=base.filter(([m])=>okDiet(m));return d.length?d:base}
+const sample=pl=>{const nm=pl.filter(([m])=>!m[6]);const src=nm.length&&Math.random()<.7?nm:pl;return src[Math.floor(Math.random()*src.length)]};
 function pick(x,avoid){const p=pool(x);if(!p.length)return -1;let c=p.filter(([,i])=>i!==avoid);if(!c.length)c=p;
- c.sort((a,b)=>macro(b[0]).p/macro(b[0]).k-macro(a[0]).p/macro(a[0]).k);c=c.slice(0,Math.max(3,Math.ceil(c.length*.7)));return c[Math.floor(Math.random()*c.length)][1]}
+ c.sort((a,b)=>macro(b[0]).p/macro(b[0]).k-macro(a[0]).p/macro(a[0]).k);c=c.slice(0,Math.max(3,Math.ceil(c.length*.7)));return sample(c)[1]}
 function ensure(){for(const x of types()){if(!pool(x).some(([,i])=>i===S.picks[x]))S.picks[x]=pick(x)}}
 function mealOut(x){if(S.mode[x]==='b'&&x!=='s')return compose(x);const i=S.picks[x];return i>=0&&i!=null?build(M[i],S.kcal*share(x)):null}
 function totals(){return types().reduce((a,x)=>{const o=mealOut(x);if(o){a.k+=o.k;a.p+=o.p;a.c+=o.c}return a},{k:0,p:0,c:0})}
-function genDay(used={}){let best=null,bs=1e9;for(let r=0;r<90;r++){const d={};let k=0,p=0,c=0,pen=0;for(const x of types()){const pl=pool(x);if(!pl.length){d[x]=-1;continue}const [m,i]=pl[Math.floor(Math.random()*pl.length)];d[x]=i;const o=build(m,S.kcal*share(x));k+=o.k;p+=o.p;c+=o.c;pen+=(used[i]||0)*.08}
+function genDay(used={}){let best=null,bs=1e9;for(let r=0;r<90;r++){const d={};let k=0,p=0,c=0,pen=0;for(const x of types()){const pl=pool(x);if(!pl.length){d[x]=-1;continue}const [m,i]=sample(pl);d[x]=i;const o=build(m,S.kcal*share(x));k+=o.k;p+=o.p;c+=o.c;pen+=(used[i]||0)*.08}
  const sc=Math.abs(k-S.kcal)/S.kcal+1.5*Math.max(0,S.prot-p)/S.prot+(S.diet==='low'?Math.max(0,c-130)/130:0)+pen;if(sc<bs){bs=sc;best=d}}return best}
 function calc(){const w=+S.w,h=+S.h,a=+S.age;const bmr=10*w+6.25*h-5*a+(S.sex==='m'?5:-161);const tdee=bmr*[1.2,1.375,1.55,1.725][S.act];
  const bmi=w/((h/100)**2);let goal=S.goal,under=false;if(goal==='lose'&&bmi<18.5){goal='keep';under=true}
@@ -349,7 +272,7 @@ function mealHTML(x,fresh){const K=S.kcal*share(x),bmode=S.mode[x]==='b'&&x!=='s
   h+=`<p class="lbl">${t('pickP')}</p><div class="chips">${pl.map(id=>`<button class="chip" data-bp="${x}:${id}" aria-pressed="${id===o.pid}">${fn(id).split(' (')[0]}</button>`).join('')}</div>
 <p class="lbl">${t('pickC')}</p><div class="chips">${BC[x].map(id=>`<button class="chip" data-bc="${x}:${id}" aria-pressed="${id===o.cid}">${id==='none'?t('none'):fn(id).split(' (')[0]}</button>`).join('')}</div>${itemsHTML(o)}`}
  else{const i=S.picks[x];if(i<0||i==null)return h+`<p class="note">${t('noOpt')}</p></section>`;const m=M[i];o=build(m,K);
-  h+=`<p class="mname">${mn(m)}${m[3]?`<span class="tag">${t('outside')}</span>`:''}</p>${itemsHTML(o)}`}
+  h+=`<p class="mname">${mn(m)}${m[3]?`<span class="tag">${t('outside')}</span>`:''}<span class="tag">${t('cu')[m[5]]||''}</span></p>${itemsHTML(o)}`}
  return h+`<div class="mfoot"><span class="k">${n(o.k)} ${t('kcal')} · ${t('prot')} ${n(o.p)} ${t('g')} · ${t('carb')} ${n(o.c)} ${t('g')}</span>${bmode?'':`<div class="acts"><button class="btn small" data-new="${x}">${t('another')}</button><button class="btn ghost small" data-list="${x}">${t('choose')}</button></div>`}</div>${logRow(x)}</section>`}
 function hint(tt){return tt.p<S.prot*.8?t('hintP'):tt.k<S.kcal*.9?t('hintLo'):tt.k>S.kcal*1.1?t('hintHi'):''}
 function plan(){ensure();const c=S.mode0==='new'?calc():null,tt=totals(),rec=recDiet();
@@ -367,9 +290,9 @@ function plan(){ensure();const c=S.mode0==='new'?calc():null,tt=totals(),rec=rec
 <div class="bar"><span id="tb" style="width:${Math.min(100,tt.k/S.kcal*100)}%"></span></div><p class="note" id="th">${hint(tt)}</p></div></div>`}
 function refresh(x){const el=$('#m-'+x);if(el)el.outerHTML=mealHTML(x,true);const tt=totals();$('#tk').textContent=n(tt.k);$('#tp').textContent=n(tt.p);$('#tc').textContent=n(tt.c);$('#tb').style.width=Math.min(100,tt.k/S.kcal*100)+'%';$('#th').textContent=hint(tt);save()}
 function genWeek(){const used={};S.week=[...Array(7)].map(()=>{const d=genDay(used);Object.values(d).forEach(i=>used[i]=(used[i]||0)+1);return d});S.got=[]}
-function shopList(){const A={};let ready=0;S.week.forEach(d=>types().forEach(x=>{const i=d[x];if(i==null||i<0)return;build(M[i],S.kcal*share(x)).items.forEach(o=>{if(READY.includes(o.id)){ready++;return}A[o.id]=(A[o.id]||0)+o.qq})}));
+function shopList(){const A={};let ready=0;S.week.forEach(d=>types().forEach(x=>{const i=d[x];if(i==null||i<0)return;build(M[i],S.kcal*share(x)).items.forEach(o=>{if(F[o.id][8]==='r'){ready++;return}A[o.id]=(A[o.id]||0)+o.qq})}));
  const kg=g=>g>=1000?n(Math.round(g/100)/10,1)+' '+t('kg'):n(Math.round(g/50)*50||50)+' '+t('g');
- return{ready,groups:CAT.map((ids,ci)=>[t('cats')[ci],ids.split(' ').filter(id=>A[id]).map(id=>{const f=F[id],q=A[id];let s;
+ return{ready,groups:['p','d','s','v','o'].map((gk,ci)=>[t('cats')[ci],Object.keys(A).filter(id=>F[id][8]===gk).map(id=>{const f=F[id],q=A[id];let s;
   if(RAW[id])s=kg(q*RAW[id])+' '+t('raw');else if(RAWC[id])s=kg(q*RAWC[id])+' '+t('raw');else if(f[2]==='g')s=kg(q);else if(f[2]==='free')s=t('forM')(n(q));else s=qtxt(q,f[2]);
   return[id,fn(id).replace(/ (مطبوخة?|مشوية أو في الفرن|مشوي)(?= |$)/g,'').replace(/^Cooked |, cooked|, grilled or baked/g,''),s]})]).filter(g=>g[1].length)}}
 function week(){if(!S.week||S.week.length!==7)genWeek();save();const L=shopList();
@@ -377,9 +300,15 @@ function week(){if(!S.week||S.week.length!==7)genWeek();save();const L=shopList(
 <div class="wrap"><div class="tips">${S.week.map((d,j)=>`<button class="opt" data-day="${j}"><span><b>${t('days')[j]}</b><br><span class="hint">${types().map(x=>d[x]>=0?mn(M[d[x]]):'—').join(AR()?'، ':', ')}</span></span><span>${t('open')}</span></button>`).join('')}</div>
 <div class="tips"><h2>${t('shopH')}</h2><p class="hint">${t('shopD')}</p>${L.groups.map(([c,its])=>`<p class="mname">${c}</p><div class="chips">${its.map(([id,nm,s])=>`<button class="chip" data-got="${id}" aria-pressed="${S.got.includes(id)}">${nm}: ${s}</button>`).join('')}</div>`).join('')}
 ${L.ready?`<p class="note">${t('readyN')(n(L.ready))}</p>`:''}<button class="btn ghost" id="copyShop">${t('copyShop')}</button><div id="copyBox"></div></div></div>${foot()}`}
-function openList(x){$('#sheetT').textContent=t('chooseX')+' '+mlabel(x);$('#closeSheet').textContent=t('close');
- $('#sheetList').innerHTML=pool(x).map(([m,i])=>{const b=build(m,S.kcal*share(x));return`<button class="opt" data-pick="${x}:${i}"><span>${mn(m)}${m[3]?`<span class="tag">${t('outS')}</span>`:''}</span><span>${n(b.k)} ${t('kcal')} · ${n(b.p)} ${t('g')}</span></button>`}).join('')||`<p class="note">${t('noOpt')}</p>`;
- $('#sheet').hidden=false;$('#closeSheet').focus()}
+let LX0={x:'s',q:'',cu:'all'};
+function openList(x){LX0={x,q:'',cu:'all'};$('#sheetT').textContent=t('chooseX')+' '+mlabel(x);$('#closeSheet').textContent=t('close');
+ const cus=['all',...new Set(pool(x).map(([m])=>m[5]))];
+ $('#sheetList').innerHTML=`<input id="lq" type="search" placeholder="${t('search')}" aria-label="${t('search')}" style="width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);font-size:16px;margin:10px 0">
+<div class="chips" id="lcu">${cus.map(c=>`<button class="chip" data-cu="${c}" aria-pressed="${c==='all'}">${t('cu')[c]||c}</button>`).join('')}</div><p class="hint" id="lcount"></p><div id="lres"></div>`;
+ $('#lq').addEventListener('input',e=>{LX0.q=e.target.value.trim();listRes()});listRes();$('#sheet').hidden=false;$('#lq').focus()}
+function listRes(){const x=LX0.x,q=LX0.q.toLowerCase();const r=pool(x).filter(([m])=>(LX0.cu==='all'||m[5]===LX0.cu)&&(!q||(m[1]+' '+m[2]).toLowerCase().includes(q)));
+ $('#lcount').textContent=t('count')(n(r.length));
+ $('#lres').innerHTML=r.slice(0,150).map(([m,i])=>{const b=build(m,S.kcal*share(x));return`<button class="opt" data-pick="${x}:${i}"><span>${mn(m)}${m[3]?`<span class="tag">${t('outS')}</span>`:''}</span><span>${n(b.k)} ${t('kcal')} · ${n(b.p)} ${t('g')}</span></button>`}).join('')||`<p class="note">${t('noOpt')}</p>`}
 function dayText(){return t('today')+' '+n(S.kcal)+' '+t('kcal')+'\n'+types().map(x=>{const o=mealOut(x);if(!o)return'';const nm=S.mode[x]==='b'&&x!=='s'?'':': '+mn(M[S.picks[x]]);return'\n'+mlabel(x)+nm+'\n'+o.items.map(i=>'- '+i.name+': '+i.q).join('\n')}).join('\n')}
 function toast(s){const d=document.createElement('div');d.className='toast';d.textContent=s;document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
 function copy(txt){const fb=()=>{$('#copyBox').innerHTML='<textarea readonly></textarea>';$('#copyBox textarea').value=txt};try{navigator.clipboard.writeText(txt).then(()=>toast(t('copied')),fb)}catch(e){fb()}}
@@ -448,6 +377,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  if(b.parentElement&&b.parentElement.dataset.seg){S[b.parentElement.dataset.seg]=d.v;[...b.parentElement.children].forEach(z=>z.setAttribute('aria-pressed',z===b));return}
  if(d.new){S.picks[d.new]=pick(d.new,S.picks[d.new]);return refresh(d.new)}
  if(d.list)return openList(d.list);
+ if(d.cu){LX0.cu=d.cu;[...$('#lcu').children].forEach(z=>z.setAttribute('aria-pressed',z===b));return listRes()}
  if(d.pick){const[x,i]=d.pick.split(':');S.picks[x]=+i;S.mode[x]='r';$('#sheet').hidden=true;refresh(x);return $('#m-'+x).scrollIntoView({block:'start',behavior:'smooth'})}
  if(d.mode){const[x,m]=d.mode.split(':');S.mode[x]=m;return refresh(x)}
  if(d.bp){const[x,id]=d.bp.split(':');S.bm[x]={...S.bm[x],p:id};return refresh(x)}
